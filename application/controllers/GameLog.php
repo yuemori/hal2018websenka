@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Login extends CI_Controller {
+class GameLog extends CI_Controller {
 
 	/**
 	 * Index Page for this controller.
@@ -20,7 +20,7 @@ class Login extends CI_Controller {
 	 */
 	public function index()
 	{
-		$this->load->view('Login.php');
+		$this->load->view('GameLog.php');
 	}
 }
 
