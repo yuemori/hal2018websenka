@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Login extends CI_Controller {
+class LoginCheck extends CI_Controller {
 
 	/**
 	 * Index Page for this controller.
@@ -20,9 +20,6 @@ class Login extends CI_Controller {
 	 */
 	public function index()
 	{
-		// クリックジャッキング対策
-		header('X-FRAME-OPTIONS: SAMEORIGIN');
-
-		$this->load->view('Login.php');
+		redirect("ModeSelect");
 	}
 }
