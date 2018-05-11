@@ -37,6 +37,10 @@ class MySmarty extends Smarty
 
     function view($template, $data = array(), $return = FALSE)
     {
+		$data['BASE_URL'] = base_url(). "/";
+		$data['SITE_URL'] = site_url(). "/";
+		$data['CURRENT_URL'] = current_url();
+		$data['INDEX_PAGE'] = index_page();
         foreach ($data as $key => $val) {
 			$this->assign($key, $val);
 		}
