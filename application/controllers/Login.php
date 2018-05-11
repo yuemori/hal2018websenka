@@ -23,6 +23,10 @@ class Login extends CI_Controller {
 		// クリックジャッキング対策
 		header('X-FRAME-OPTIONS: SAMEORIGIN');
 
-		$this->load->view('Login.php');
+		//var_dump($this->smarty);
+
+		$this->smarty->view("Login.tpl");
+
+		//		$this->load->view('Login.php');
 	}
 }

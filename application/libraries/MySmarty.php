@@ -41,6 +41,8 @@ class MySmarty extends Smarty
 		$data['SITE_URL'] = site_url(). "/";
 		$data['CURRENT_URL'] = current_url();
 		$data['INDEX_PAGE'] = index_page();
+		$data['INCLUDE_PAGE'] = $template;
+		$template = "page_layout.tpl";
         foreach ($data as $key => $val) {
 			$this->assign($key, $val);
 		}
