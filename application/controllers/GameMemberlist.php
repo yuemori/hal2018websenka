@@ -32,9 +32,11 @@ class GameMemberlist extends CI_Controller
 		} catch (Exception $obj) {
 			var_dump($obj);
 		}
-		echo sprintf("user_id:%s", $this->_user_id);
-		echo sprintf("game_id:%s", $this->_game_id);
 
+		$this->load->model('Gamemember_model', 'members');
+
+		$data["members"] = $this->members->load($this->_game_id);
+		// var_dump($data["members"]);
 		$data["user_id"] = $this->_user_id;
 		$data["game_id"] = $this->_game_id;
 		$this->smarty->view("GameMemberlist.tpl", $data);

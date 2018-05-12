@@ -1,3 +1,9 @@
-<p class="alert">GameMemberlist test view </p>
-<br />
-ゲームに参加中のユーザーの一覧を表示
+<div>参加者一覧</div>
+
+{foreach from=$members item=person}
+<div>
+  <span>・{$person->nickname}</span>
+</div>
+{/foreach}
+
+<a href="{$SITE_URL}GameMemberlist?game_id={$game_id}&user_id={$user_id}">再読込</a>
