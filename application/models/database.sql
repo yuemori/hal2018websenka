@@ -70,6 +70,7 @@ CREATE TABLE KeywordGroups (
 # wave: ゲーム進行ターン数
 # status: 現在の状態
 # group_id: このゲームのお題として選ばれたワードのグループID
+# minority_user_id: このゲームにおける少数派ユーザーID
 # minimum: 最低参加人数制限
 # start_at: ゲーム開始時間
 # end_at: ゲーム終了時間
@@ -80,6 +81,7 @@ CREATE TABLE Game (
 , wave INT NOT NULL
 , status INT NOT NULL
 , group_id INT NOT NULL
+, minority_user_id INT NOT NULL
 , minimum INT NOT NULL
 , start_at DATETIME
 , end_at DATETIME
