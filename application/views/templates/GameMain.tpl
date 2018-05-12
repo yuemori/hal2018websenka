@@ -1,6 +1,4 @@
-<p class="alert">GameMain test view </p>
-<br />
-
+<span>TURN: {$wave}</span><br />
 <table border="2" cellpadding="0" width="800" height="800">
   <tr>
     <!-- ログイン中のプレーヤーからの発言を受け付ける入力フォーム -->
