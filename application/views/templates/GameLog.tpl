@@ -1,13 +1,15 @@
-<html>
-  <head>
-    <link href="<?=base_url();?>css/default.css" type="text/css" rel="stylesheet" />
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>GameLog</title>
-  </head>
-  <body>
-    <p class="alert">GameLog test view </p>
-    このファイルは自動生成されました。<br />
+{assign var=turn value=0}
+{foreach from=$logs item=log}
+  {if $log->wave != $turn}
+    {if $turn != 0}<br />{/if}
+    <span>TURN:{$log->wave}</span><br />
+  {/if}
 
-	<a href="<?=site_url('GameMain');?>">ゲーム画面へ戻る</a>
-  </body>
-</html>
+  <div>
+    <span>{$log->nickname}</span>
+    <span>{$log->say}</span>
+  </div>
+  {assign var=turn value=$log->wave}
+{/foreach}
+
+<a href="{$SITE_URL}GameLog?game_id={$game_id}&user_id={$user_id}">再読込</a>
