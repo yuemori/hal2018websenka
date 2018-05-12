@@ -36,7 +36,8 @@ preg_match_all(
 );
 
 foreach ($matches as $i => $match) {
-	$table_name = $match[1];
+	$table_name = ucfirst(strtolower($match[1]));
+	
 	
 	$template = file_get_contents("template.php");
 	$result = str_replace("TABLENAME", $table_name, $template);
