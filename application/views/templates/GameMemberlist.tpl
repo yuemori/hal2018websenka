@@ -1,9 +1,27 @@
-<div>参加者一覧</div>
-
-{foreach from=$members item=person}
-<div>
-  <span>・{$person->nickname}</span>
+{* -------------------------------------------- *}
+{* ゲームの参加者一覧を表示する領域 *}
+{* 操作者自身が必ず一番上に表示される *}
+{* -------------------------------------------- *}
+<div style="background-color:#FFCCCC">
+参加者一覧
+{strip}
+  {foreach from=$members item=person}
+    {if $user_id == $person->user_id}
+      <div>
+        <span>
+          ＊{$person->nickname}
+        </span>
+      </div>
+    {/if}
+  {/foreach}
+  {foreach from=$members item=person}
+    {if $user_id != $person->user_id}
+      <div>
+        <span>
+          ・{$person->nickname}
+        </span>
+      </div>
+    {/if}
+  {/foreach}
+{/strip}
 </div>
-{/foreach}
-
-<a href="{$SITE_URL}GameMemberlist?game_id={$game_id}&user_id={$user_id}">再読込</a>
