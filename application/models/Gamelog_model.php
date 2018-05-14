@@ -1,4 +1,7 @@
 <?php
+
+require_once dirname(__FILE__). '/Game_model.php';
+
 /*!
  * Gamelog_model
  *
@@ -23,6 +26,24 @@
 			$this->db->order_by('GameLog.wave DESC,GameLog.insert_at DESC');
 			$query = $this->db->get();
 			return $query->result();
+		}
+
+		/*!
+		 */
+		public function write($game, $user_id, $message)
+		{
+			if (!isset($game)) {
+				return false;
+			}
+
+			$this->db->set('game_id', $game->game_id);
+			$this->db->set('wave', $game->wave);
+			$this->db->set('user_id', $user_id);
+			$this->db->set('say', $message);
+			$this->db->set('insert_at', 'NOW()', FALSE);
+			$this->db->set('update_at', 'NOW()', FALSE);
+			$ret = $this->db->insert('GameLog');
+			return $ret;
 		}
 	}
 
