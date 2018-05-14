@@ -33,6 +33,9 @@ class GameMemberlist extends CI_Controller
 			var_dump($obj);
 		}
 
+		$this->load->model('Game_model', 'game');
+		$this->game->load($this->_game_id);
+
 		$this->load->model('Gamemember_model', 'members');
 
 		$data["members"] = $this->members->load($this->_game_id);
