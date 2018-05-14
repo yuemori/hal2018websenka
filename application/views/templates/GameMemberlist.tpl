@@ -14,6 +14,7 @@
       </div>
     {/if}
   {/foreach}
+
   {foreach from=$members item=person}
     {if $user_id != $person->user_id}
       <div>
