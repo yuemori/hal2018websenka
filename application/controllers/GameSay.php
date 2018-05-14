@@ -38,6 +38,15 @@ class GameSay extends CI_Controller
 			// プレーヤーが何かしらのテキストを入力して「送信」をクリックした時のみココを通ります
 			// TODO: 入力された文字列をDBに書く
 			var_dump($this->_message);
+
+			$success = false;
+			$this->load->model('Game_model', 'game');
+			$this->load->model('Gamelog_model', 'logs');
+			if ($this->game->load($this->_game_id)) {
+				if ($this->logs->write($this->game, $this->_user_id, $this->_message)) {
+					$success = true;
+				}
+			}
 		}
 
 		//		$data["error"] = "入力エラーがあった場合は、ここに警告がでますよ。";
