@@ -33,6 +33,15 @@ class GameSay extends CI_Controller
 			var_dump($obj);
 		}
 
+		$this->_message = $this->input->post('message');
+		if (strlen($this->_message) != 0) {
+			// プレーヤーが何かしらのテキストを入力して「送信」をクリックした時のみココを通ります
+			// TODO: 入力された文字列をDBに書く
+			var_dump($this->_message);
+		}
+
+		//		$data["error"] = "入力エラーがあった場合は、ここに警告がでますよ。";
+		$data["error"] = "";
 		$data["user_id"] = $this->_user_id;
 		$data["game_id"] = $this->_game_id;
 		$this->smarty->view("GameSay.tpl", $data);

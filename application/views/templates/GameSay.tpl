@@ -1,3 +1,4 @@
+{strip}
 <div>
 <form method="post" action="{$SITE_URL}GameSay?game_id={$game_id}&user_id={$user_id}">
   <span>
@@ -7,6 +8,10 @@
   <span>
     <input type="submit" name="submit" />
   </span>
+  {if $error}
+    <span>&nbsp;{$error}</span>
+  {/if}
 </form>
 </div>
 <hr />
+{/strip}
