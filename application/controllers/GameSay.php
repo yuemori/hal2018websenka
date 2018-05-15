@@ -59,8 +59,15 @@ class GameSay extends CI_Controller
 		}
 
 		// 正常に書き込みが完了
-		// TODO: 自分以外のプレーヤーの入力が終わるのを待つ？
-		return $this->_show_input_form("");
+		// 自分以外のプレーヤーの入力が終わるのを待つ？
+		redirect(
+				 sprintf("GameSayWait?game_id=%d&user_id=%d&wave=%d"
+						 , $this->_game_id
+						 , $this->_user_id
+						 , $game->wave
+						 )
+				 );
+		return ;
 	}
 
 	private function _show_input_form($error)

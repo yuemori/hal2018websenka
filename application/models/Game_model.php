@@ -25,6 +25,15 @@
 			return isset($temp[0]) ? $temp[0] : NULL;
 		}
 
+		/*!
+		 */
+		public function setWave($game_id, $wave)
+		{
+			$this->db->set('wave', $wave);
+			$this->db->where('game_id', $game_id);
+			$this->db->update('Game');
+			return true;
+		}
 	}
 
 ?>
