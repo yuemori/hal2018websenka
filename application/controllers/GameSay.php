@@ -40,19 +40,31 @@ class GameSay extends CI_Controller
 			var_dump($obj);
 		}
 
-		$this->_message = $this->input->post('message');
-		if (strlen($this->_message) == 0) {
-			// プレーヤーからのテキスト入力が無い状態
-			// 入力フォームを表示して終了する
-			return $this->_show_input_form("");
-		}
-
-		// プレーヤーが何かしらのテキストを入力して「送信」をクリックした時のみココを通ります
 		$game = $this->game->load($this->_game_id);
 		if (NULL === $game) {
 			// 対象のゲームが見つからない？ game_idが不正な状態
 			return $this->_show_input_form("不正なリクエストです");
 		}
+
+		if ($game->wave > $game->max_wave) {
+			// ターンが進んだ事によって終了条件を満たす時
+			// 他の誰かがターンを進めた事で終了条件が満たされた時も通る
+			// TODO: goto game end
+			$data["user_id"] = $this->_user_id;
+			$data["game_id"] = $this->_game_id;
+			$this->smarty->view("EndOfGame.tpl", $data);
+			return ;
+		}
+
+		$this->_message = $this->input->post('message');
+		if (strlen($this->_message) == 0) {
+			// プレーヤーからのテキスト入力が無い状態
+			// 入力フォームを表示して終了する
+			return $this->_show_input_form("");
+		} else {
+			// プレーヤーが何かしらのテキストを入力して「送信」をクリックした時のみココを通ります
+		}
+
 		if (!$this->logs->write($game, $this->_user_id, $this->_message)) {
 			// ログの書き込みに失敗
 			return $this->_show_input_form("不正な入力です");

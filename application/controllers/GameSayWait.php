@@ -69,7 +69,7 @@ class GameSayWait extends CI_Controller
 				// 全員が発言終了しているか？チェックする
 				foreach ($members as $person) {
 					if (in_array($person->user_id, $this_wave_sended)) continue;
-					// このユーザーの発言が見つからなかった
+					// 発言が見つからなかったユーザーを誰か１人でも見つけた
 					$data["user_id"] = $this->_user_id;
 					$data["game_id"] = $this->_game_id;
 					$data["wave"]    = $this->_wave;
@@ -81,6 +81,7 @@ class GameSayWait extends CI_Controller
 				$this->game->setWave($game->game_id, $game->wave + 1);
 			}
 		}
+
 		// ここまで来たという事は全てのユーザーが発言終了している
 		redirect(
 				 sprintf("GameSay?game_id=%d&user_id=%d"
