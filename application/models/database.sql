@@ -68,6 +68,7 @@ CREATE TABLE KeywordGroups (
 #
 # game_id: ゲーム毎に振られる一意なID
 # wave: ゲーム進行ターン数
+# max_wave: ゲームの終了条件になる最大ターン数
 # status: 現在の状態
 # group_id: このゲームのお題として選ばれたワードのグループID
 # minority_user_id: このゲームにおける少数派ユーザーID
@@ -79,6 +80,7 @@ DROP TABLE IF EXISTS Game;
 CREATE TABLE Game (
   game_id INT NOT NULL AUTO_INCREMENT
 , wave INT NOT NULL
+, max_wave INT NOT NULL
 , status INT NOT NULL
 , group_id INT NOT NULL
 , minority_user_id INT NOT NULL
