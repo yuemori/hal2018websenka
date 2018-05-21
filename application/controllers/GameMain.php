@@ -13,6 +13,12 @@ class GameMain extends CI_Controller
 	var $_user_id;
 	var $_game_id;
 
+	public function __construct()
+	{
+		parent::__construct();
+		$this->load->model('Game_model', 'game');
+	}
+
 	private function _validate()
 	{
    		$this->_user_id = $this->input->get('user_id');
@@ -33,7 +39,15 @@ class GameMain extends CI_Controller
 			var_dump($obj);
 		}
 
-		$data["wave"] = 1;
+		$game = $this->game->load($this->_game_id);
+		if (NULL !== $game) {
+			$data["wave"] = $game->wave;
+			$data["max_wave"] = $game->max_wave;
+		} else {
+			$data["wave"] = 0;
+			$data["max_wave"] = 0;
+		}
+
 		$data["user_id"] = $this->_user_id;
 		$data["game_id"] = $this->_game_id;
 		$this->smarty->view("GameMain.tpl", $data);

@@ -1,5 +1,5 @@
 <div>
-  <span>TURN: {$wave}</span>
+  <span>TURN: {$wave}/{$max_wave}</span>
   <span>
     <a href="{$SITE_URL}GameJudgement">投票画面へ</a>
   </span>
