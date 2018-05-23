@@ -93,7 +93,7 @@
 		{
 			$CI =& get_instance();
 			$CI->load->model('Gamelog_model', 'logs');
-			$ret = $CI->logs->write($game->game_id, $game->wave, $user_id, $message);
+			$ret = $CI->logs->write($this->game_id, $this->wave, $user_id, $message);
 			if (!$ret) return false;
 
 			$CI->load->model('Gamelog_model', 'logs');

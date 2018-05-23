@@ -7,8 +7,6 @@
   {/if}
   {assign var=turn value=$log->wave}
 {/foreach}
-&nbsp;
-<a href="{$SITE_URL}GameLog?game_id={$game_id}&user_id={$user_id}">再読込</a>
 
 {assign var=turn value=0}
 {foreach name=loop from=$logs item=log}

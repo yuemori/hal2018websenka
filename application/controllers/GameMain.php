@@ -41,11 +41,15 @@ class GameMain extends CI_Controller
 
 		$game = $this->game->load($this->_game_id);
 		if (NULL !== $game) {
-			$data["wave"] = $game->wave;
+			$data["wave"]     = $game->wave;
 			$data["max_wave"] = $game->max_wave;
+			$data["members"]  = $game->members;
+			$data["logs"]     = $game->logs;
 		} else {
-			$data["wave"] = 0;
+			$data["wave"]     = 0;
 			$data["max_wave"] = 0;
+			$data["members"]  = array();
+			$data["logs"]     = array();
 		}
 
 		$data["user_id"] = $this->_user_id;
