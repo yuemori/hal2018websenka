@@ -8,9 +8,12 @@
   <span>
     <input type="submit" name="submit" />
   </span>
+{*
   {if $error}
     <span>&nbsp;{$error}</span>
   {/if}
+*}
+
 </form>
 </div>
 <hr />
