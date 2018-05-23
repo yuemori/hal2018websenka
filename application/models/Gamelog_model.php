@@ -25,19 +25,15 @@ require_once dirname(__FILE__). '/Game_model.php';
 			$this->db->where('game_id', $game_id);
 			$this->db->order_by('GameLog.wave DESC,GameLog.insert_at DESC');
 			$query = $this->db->get();
-			return $query->result();
+			return $query->result('Gamelog_model');
 		}
 
 		/*!
 		 */
-		public function write($game, $user_id, $message)
+		public function write($game_id, $wave, $user_id, $message)
 		{
-			if (!isset($game)) {
-				return false;
-			}
-
-			$this->db->set('game_id', $game->game_id);
-			$this->db->set('wave', $game->wave);
+			$this->db->set('game_id', $game_id);
+			$this->db->set('wave', $wave);
 			$this->db->set('user_id', $user_id);
 			$this->db->set('say', $message);
 			$this->db->set('insert_at', 'NOW()', FALSE);

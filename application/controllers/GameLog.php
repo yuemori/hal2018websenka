@@ -13,6 +13,12 @@ class GameLog extends CI_Controller
 	var $_user_id;
 	var $_game_id;
 
+	public function __construct()
+	{
+		parent::__construct();
+		$this->load->model('Gamelog_model', 'logs');
+	}
+
 	private function _validate()
 	{
    		$this->_user_id = $this->input->get('user_id');
@@ -32,8 +38,6 @@ class GameLog extends CI_Controller
 		} catch (Exception $obj) {
 			var_dump($obj);
 		}
-
-		$this->load->model('Gamelog_model', 'logs');
 
 		$data["logs"] = $this->logs->load($this->_game_id);
 		$data["user_id"] = $this->_user_id;
