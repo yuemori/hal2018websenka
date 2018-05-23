@@ -46,7 +46,7 @@ class GameSay extends CI_Controller
 			return $this->_show_input_form("不正なリクエストです");
 		}
 
-		if ($game->wave > $game->max_wave) {
+		if ($game->endOfGame()) {
 			// ターンが進んだ事によって終了条件を満たす時
 			// 他の誰かがターンを進めた事で終了条件が満たされた時も通る
 			// TODO: goto game end
@@ -65,7 +65,7 @@ class GameSay extends CI_Controller
 			// プレーヤーが何かしらのテキストを入力して「送信」をクリックした時のみココを通ります
 		}
 
-		if (!$this->logs->write($game, $this->_user_id, $this->_message)) {
+		if (!$game->logWrite($this->_user_id, $this->_message)) {
 			// ログの書き込みに失敗
 			return $this->_show_input_form("不正な入力です");
 		}

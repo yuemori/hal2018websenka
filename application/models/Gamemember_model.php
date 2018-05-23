@@ -22,7 +22,7 @@
 			$this->db->join('Keyword', 'word_id');
 			$this->db->where('game_id', $game_id);
 			$query = $this->db->get();
-			return $query->result();
+			return $query->result('Gamemember_model');
 		}
 	}
 
