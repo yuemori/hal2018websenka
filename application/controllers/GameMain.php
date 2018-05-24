@@ -45,11 +45,13 @@ class GameMain extends CI_Controller
 			$data["max_wave"] = $game->max_wave;
 			$data["members"]  = $game->members;
 			$data["logs"]     = $game->logs;
+			$data["end_of_game"] = $game->endOfGame();
 		} else {
 			$data["wave"]     = 0;
 			$data["max_wave"] = 0;
 			$data["members"]  = array();
 			$data["logs"]     = array();
+			$data["end_of_game"] = false;
 		}
 
 		$data["user_id"] = $this->_user_id;
