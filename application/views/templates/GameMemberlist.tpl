@@ -3,33 +3,30 @@
 {* 操作者自身が必ず一番上に表示される *}
 {* -------------------------------------------- *}
 {strip}
+<div class="card mt-4" style="width: 100%;">
+    <h5 class="card-header">参加者一覧</h5>
+    <div class="card-body">
   {foreach from=$members item=person}
     {if $user_id == $person->user_id}
-	  お題：{$person->word}
-      <div style="background-color:#FFCCCC">
-      参加者一覧
-      <div>
-        <span>
-          ＊{$person->nickname}
-
+      <div class="card-title">あなたのお題: {$person->word}</div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+          {$person->nickname}
           &nbsp;({$person->word})
-
-        </span>
-      </div>
+        </li>
     {/if}
   {/foreach}
 
   {foreach from=$members item=person}
     {if $user_id != $person->user_id}
-      <div>
-        <span>
-          ・{$person->nickname}
+        <li class="list-group-item">
+          {$person->nickname}
 
           &nbsp;({$person->word})
-
-        </span>
-      </div>
+        </li>
     {/if}
   {/foreach}
-{/strip}
+      </ul>
+  </div>
 </div>
+{/strip}
