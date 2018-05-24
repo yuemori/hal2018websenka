@@ -8,6 +8,13 @@
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+
+define('SAY_SUCCESS',             0);
+define('SAY_ERR_NO_INPUT',        1);
+define('SAY_ERR_INVALID_MESSAGE', 2);
+define('SAY_ERR_GAME_NOT_FOUND',  3);
+
+
 class GameSay extends CI_Controller
 {
 	var $_user_id;
@@ -43,7 +50,7 @@ class GameSay extends CI_Controller
 		$game = $this->game->load($this->_game_id);
 		if (NULL === $game) {
 			// 対象のゲームが見つからない？ game_idが不正な状態
-			return $this->_show_input_form("不正なリクエストです");
+			return $this->_return_to_main(SAY_ERR_GAME_NOT_FOUND);
 		}
 
 		if ($game->endOfGame()) {
@@ -60,37 +67,28 @@ class GameSay extends CI_Controller
 		if (strlen($this->_message) == 0) {
 			// プレーヤーからのテキスト入力が無い状態
 			// 入力フォームを表示して終了する
-			return $this->_show_input_form("");
-		} else {
+			return $this->_return_to_main(SAY_ERR_NO_INPUT);
+ 		} else {
 			// プレーヤーが何かしらのテキストを入力して「送信」をクリックした時のみココを通ります
 		}
 
 		if (!$game->logWrite($this->_user_id, $this->_message)) {
 			// ログの書き込みに失敗
-			return $this->_show_input_form("不正な入力です");
+			return $this->_return_to_main(SAY_ERR_INVALID_MESSAGE);
 		}
 
 		// 正常に書き込みが完了
-		// 自分以外のプレーヤーの入力が終わるのを待つ？
-		redirect(
-				 sprintf("GameSayWait?game_id=%d&user_id=%d&wave=%d"
-						 , $this->_game_id
-						 , $this->_user_id
-						 , $game->wave
-						 )
-				 );
+		$this->_return_to_main(SAY_SUCCESS);
 		return ;
 	}
 
-	private function _show_input_form($error)
+	private function _return_to_main($error)
 	{
-		$data["error"] = $error;
-		$data["user_id"] = $this->_user_id;
-		$data["game_id"] = $this->_game_id;
 		redirect(
-				 sprintf("GameMain?game_id=%d&user_id=%d"
+				 sprintf("GameMain?game_id=%d&user_id=%d&error=%d"
 						 , $this->_game_id
 						 , $this->_user_id
+						 , $error
 						 )
 				 );
 		return true;
