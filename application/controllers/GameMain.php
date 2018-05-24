@@ -10,8 +10,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class GameMain extends CI_Controller
 {
-	var $_user_id;
-	var $_game_id;
+	private $_user_id;
+	private $_game_id;
+	private $_error;
 
 	public function __construct()
 	{
@@ -29,6 +30,7 @@ class GameMain extends CI_Controller
 		if (NULL == $this->_game_id) {
 			throw new Exception('invalid params game_id');
 		}
+		$this->_error = trim($this->input->get('error'));
 	}
 
 	public function index()
@@ -58,6 +60,7 @@ class GameMain extends CI_Controller
 
 		$data["user_id"] = $this->_user_id;
 		$data["game_id"] = $this->_game_id;
+		$data["error"]   = $this->_error;
 		$this->smarty->view("GameMain.tpl", $data);
 	}
 
