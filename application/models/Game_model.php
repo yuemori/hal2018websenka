@@ -3,10 +3,32 @@
  * Game_model
  *
  */
+	class GameWave
+	{
+		public $wave;
+		public $logs; // array of Gamelog_model class
+
+		public function __construct($wave)
+		{
+			$this->wave = $wave;
+			$this->logs = array();
+		}
+
+		public function append_log($in)
+		{
+			$this->logs[] = $in;
+			return usort($this->logs, function ($left, $right) {
+					return ($left->insert_at <=> $right->insert_at);
+				}
+				);
+		}
+	}
+
 	class Game_model extends CI_Model
 	{
 		public $members;  // array of Gamemember_model class
 		public $logs;  // array of Gamelog_model class
+		public $waves;  // array of GameWave
 
 		/*!
 		 */
@@ -83,6 +105,11 @@
 			$CI->load->model('Gamelog_model', 'logs');
 			$ret->members = $CI->members->load($ret->game_id);
 			$ret->logs = $CI->logs->load($ret->game_id);
+
+			echo "<pre>";
+			$ret->waves = Game_model::waveFactory($ret->game_id);
+			echo "</pre>";
+
 			return $ret;
 		}
 
@@ -100,6 +127,27 @@
 			$this->logs = $CI->logs->load($this->game_id);
 			return true;
 		}
+
+		/*!
+		 * ターン毎のデータを構築する
+		 */
+		static private function waveFactory($game_id)
+		{
+			$CI =& get_instance();
+			$CI->load->model('Gamelog_model', 'logs');
+			$result = array();
+			$temp = $CI->logs->load($game_id);
+			foreach ($temp as $log) {
+				if (!isset($result[$log->wave])) {
+					$result[$log->wave] = array();
+					$result[$log->wave] = new GameWave($log->wave);
+				}
+				$result[$log->wave]->append_log($log);
+			}
+			ksort($result);
+			return $result;
+		}
+
 	}
 
 ?>
