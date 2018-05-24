@@ -19,7 +19,7 @@ require_once dirname(__FILE__). '/Game_model.php';
 		 */
 		public function load($game_id)
 		{
-			$this->db->select('*');
+			$this->db->select('log_id, game_id, wave, GameLog.user_id, nickname, say, GameLog.insert_at');
 			$this->db->from('GameLog');
 			$this->db->join('UserAccount', 'UserAccount.user_id=GameLog.user_id');
 			$this->db->where('game_id', $game_id);
