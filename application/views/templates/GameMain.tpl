@@ -10,14 +10,22 @@
   <div class="col-lg">
     <div class="row">
       <div class="col-lg-8">
-      {include file="GameSay.tpl"}
+      {if $end_of_game}
+      {else}
+        {include file="GameSay.tpl"}
+      {/if}
       </div>
+
       <div class="col-lg">
         <div class="float-right">
-          <button class="btn btn-primary mr-2" href="{$SITE_URL}GameJudgement">投票画面へ</button>
-          <button class="btn btn-secondary" href="{$SITE_URL}GameMain?game_id={$game_id}&user_id={$user_id}">再読込</button>
+          {if $end_of_game}
+            <a class="btn btn-primary mr-2" href="{$SITE_URL}GameJudgement">投票画面へ</a>
+          {else}
+          {/if}
+          <a class="btn btn-secondary" href="{$SITE_URL}GameMain?game_id={$game_id}&user_id={$user_id}#game-log">再読込</a>
         </div>
       </div>
+
     </div>
     <div>
     {include file="GameLog.tpl"}
