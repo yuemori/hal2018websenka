@@ -64,7 +64,7 @@ class GameSayWait extends CI_Controller
 
 		// ここまで来たという事は全てのユーザーが発言終了している
 		redirect(
-				 sprintf("GameSay?game_id=%d&user_id=%d"
+				 sprintf("GameMain?game_id=%d&user_id=%d"
 						 , $this->_game_id
 						 , $this->_user_id
 						 )
