@@ -87,7 +87,12 @@ class GameSay extends CI_Controller
 		$data["error"] = $error;
 		$data["user_id"] = $this->_user_id;
 		$data["game_id"] = $this->_game_id;
-		$this->smarty->view("GameSay.tpl", $data);
+		redirect(
+				 sprintf("GameMain?game_id=%d&user_id=%d"
+						 , $this->_game_id
+						 , $this->_user_id
+						 )
+				 );
 		return true;
 	}
 
