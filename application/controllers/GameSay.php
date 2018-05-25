@@ -4,7 +4,8 @@
  *
  * user_id: ログイン中のユーザーID
  * game_id: 進行中のゲームID
- *
+ * wave:    発言しようとしたユーザーが画面で見ていたターン
+ *          発言するタイミングでターンが変わってたりするとおかしな事になるので送ってもらってる
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -13,12 +14,14 @@ define('SAY_SUCCESS',             0);
 define('SAY_ERR_NO_INPUT',        1);
 define('SAY_ERR_INVALID_MESSAGE', 2);
 define('SAY_ERR_GAME_NOT_FOUND',  3);
+define('SAY_ERR_WAVE_MISSMATCH',  4);
 
 
 class GameSay extends CI_Controller
 {
-	var $_user_id;
-	var $_game_id;
+	private $_user_id;
+	private $_game_id;
+	private $_wave;
 
 	public function __construct()
 	{
@@ -37,6 +40,10 @@ class GameSay extends CI_Controller
 		if (NULL == $this->_game_id) {
 			throw new Exception('invalid params game_id');
 		}
+		$this->_wave = $this->input->get('wave');
+		if (NULL == $this->_wave) {
+			throw new Exception('invalid params wave');
+		}
 	}
 
 	public function index()
@@ -53,13 +60,16 @@ class GameSay extends CI_Controller
 			return $this->_return_to_main(SAY_ERR_GAME_NOT_FOUND);
 		}
 
+		if ($game->wave != $this->_wave) {
+			// ゲーム内部でターンが進んでしまっている
+			return $this->_return_to_main(SAY_ERR_WAVE_MISSMATCH);
+		}
+
 		if ($game->endOfGame()) {
 			// ターンが進んだ事によって終了条件を満たす時
 			// 他の誰かがターンを進めた事で終了条件が満たされた時も通る
 			// TODO: goto game end
-			$data["user_id"] = $this->_user_id;
-			$data["game_id"] = $this->_game_id;
-			$this->smarty->view("EndOfGame.tpl", $data);
+			$this->_return_to_main(SAY_SUCCESS);
 			return ;
 		}
 
@@ -75,6 +85,12 @@ class GameSay extends CI_Controller
 		if (!$game->logWrite($this->_user_id, $this->_message)) {
 			// ログの書き込みに失敗
 			return $this->_return_to_main(SAY_ERR_INVALID_MESSAGE);
+		}
+
+		// ターンを進める処理
+		// TODO：時間管理とかに変える
+		if ($game->canFinishThisWave()) {
+			$game->gotoNextWave();
 		}
 
 		// 正常に書き込みが完了
