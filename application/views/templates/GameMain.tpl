@@ -2,7 +2,7 @@
 <div class="row mb-4">
   <div class="col-lg-3">
     <button class="btn btn-outline-primary" style="width: 100%;">
-      TURN {$wave}/{$max_wave}
+      TURN {$wave}
     </button>
     {include file="GameMemberlist.tpl"}
   </div>

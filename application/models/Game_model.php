@@ -26,6 +26,9 @@
 
 	class Game_model extends CI_Model
 	{
+		// ゲーム進行の区切りを何分にするか？
+		private const WAVE_INTERVAL_MINUTE = 5;
+
 		public $wave;
 		public $max_wave;
 		public $members;  // array of Gamemember_model class
@@ -43,23 +46,30 @@
 		 */
 		public function getWave()
 		{
-/*
-			$time = new DateTime(NULL, new DateTimeZone('Asia/Tokyo'));
-			var_dump($this->start_at)."\n";
-			var_dump($time->getTimestamp();
-
-
-			$interval = $time->getTimestamp() - strtotime($this->start_at);
+			$start= new DateTime($this->start_at, new DateTimeZone('Asia/Tokyo'));
+			$now  = new DateTime('now', new DateTimeZone('Asia/Tokyo'));
+			$interval = $now->getTimestamp() - $start->getTimestamp();
+			$ret = (int)($interval / 60 / Game_model::WAVE_INTERVAL_MINUTE) + 1;
+			/*
+			echo "<pre>";
+			var_dump($start->format('Y-m-d H:i:s'));
+			var_dump($start->getTimestamp());
+			var_dump($now->format('Y-m-d H:i:s'));
+			var_dump($now->getTimestamp());
 			var_dump($interval);
-*/
-			return 1;
+			var_dump($ret);
+			echo "</pre>";
+			*/
+			return $ret;
 		}
 
 		/*!
 		 */
 		public function endOfGame()
 		{
-			return ($this->wave > $this->max_wave);
+			$end = new DateTime($this->end_at, new DateTimeZone('Asia/Tokyo'));
+			$now = new DateTime('now', new DateTimeZone('Asia/Tokyo'));
+			return ($now > $end);
 		}
 
 		/*!
