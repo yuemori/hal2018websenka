@@ -40,9 +40,9 @@ VALUES
 
 DELETE FROM Game;
 INSERT INTO Game
-  (game_id, wave, max_wave, status, group_id, minority_user_id, minimum)
+  (game_id, status, group_id, minority_user_id, minimum, start_at, end_at)
 VALUES
-  (1, 4, 4, 0, 1, 1, 4)
+  (1, 0, 1, 1, 4, NOW(), (NOW() +  INTERVAL 30 SECOND))
 ;
 
 
