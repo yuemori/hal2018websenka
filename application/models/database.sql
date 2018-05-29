@@ -79,8 +79,6 @@ CREATE TABLE KeywordGroups (
 DROP TABLE IF EXISTS Game;
 CREATE TABLE Game (
   game_id INT NOT NULL AUTO_INCREMENT
-, wave INT NOT NULL
-, max_wave INT NOT NULL
 , status INT NOT NULL
 , group_id INT NOT NULL
 , minority_user_id INT NOT NULL
