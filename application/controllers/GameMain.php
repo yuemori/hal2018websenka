@@ -58,6 +58,8 @@ class GameMain extends CI_Controller
 			$data["end_of_game"] = false;
 		}
 
+		$game->getWave();
+
 		$data["user_id"] = $this->_user_id;
 		$data["game_id"] = $this->_game_id;
 		$data["error"]   = $this->_error;
