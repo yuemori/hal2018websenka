@@ -26,6 +26,8 @@
 
 	class Game_model extends CI_Model
 	{
+		public $wave;
+		public $max_wave;
 		public $members;  // array of Gamemember_model class
 		public $logs;  // array of Gamelog_model class
 		public $waves;  // array of GameWave
@@ -35,6 +37,22 @@
 		public function __construct()
 		{
 			$this->load->database();
+		}
+
+		/*!
+		 */
+		public function getWave()
+		{
+/*
+			$time = new DateTime(NULL, new DateTimeZone('Asia/Tokyo'));
+			var_dump($this->start_at)."\n";
+			var_dump($time->getTimestamp();
+
+
+			$interval = $time->getTimestamp() - strtotime($this->start_at);
+			var_dump($interval);
+*/
+			return 1;
 		}
 
 		/*!
@@ -120,7 +138,7 @@
 		{
 			$CI =& get_instance();
 			$CI->load->model('Gamelog_model', 'logs');
-			$ret = $CI->logs->write($this->game_id, $this->wave, $user_id, $message);
+			$ret = $CI->logs->write($this->game_id, $this->getWave(), $user_id, $message);
 			if (!$ret) return false;
 
 			$CI->load->model('Gamelog_model', 'logs');
