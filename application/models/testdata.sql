@@ -42,7 +42,7 @@ DELETE FROM Game;
 INSERT INTO Game
   (game_id, status, group_id, minority_user_id, minimum, start_at, end_at)
 VALUES
-  (1, 0, 1, 1, 4, NOW(), (NOW() +  INTERVAL 30 SECOND))
+  (1, 0, 1, 1, 4, (NOW() -  INTERVAL 1400 SECOND), (NOW() +  INTERVAL 30 SECOND))
 ;
 
 
