@@ -4,8 +4,6 @@
  *
  * user_id: ログイン中のユーザーID
  * game_id: 進行中のゲームID
- * wave:    発言しようとしたユーザーが画面で見ていたターン
- *          発言するタイミングでターンが変わってたりするとおかしな事になるので送ってもらってる
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -40,10 +38,6 @@ class GameSay extends CI_Controller
 		$this->_game_id = $this->input->get('game_id');
 		if (NULL == $this->_game_id) {
 			throw new Exception('invalid params game_id');
-		}
-		$this->_wave = $this->input->get('wave');
-		if (NULL == $this->_wave) {
-			throw new Exception('invalid params wave');
 		}
 	}
 
