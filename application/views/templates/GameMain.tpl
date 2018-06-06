@@ -27,7 +27,7 @@
       </div>
 
     </div>
-    <div>
+    <div id="log-view-area">
     {include file="GameLog.tpl"}
     </div>
   </div>
