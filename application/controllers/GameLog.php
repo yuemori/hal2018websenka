@@ -16,7 +16,7 @@ class GameLog extends CI_Controller
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->model('Gamelog_model', 'logs');
+		$this->load->model('Game_model', 'game');
 	}
 
 	private function _validate()
@@ -39,10 +39,13 @@ class GameLog extends CI_Controller
 			var_dump($obj);
 		}
 
-		$data["logs"] = $this->logs->load($this->_game_id);
-		$data["user_id"] = $this->_user_id;
-		$data["game_id"] = $this->_game_id;
-		$this->smarty->view("GameLog.tpl", $data);
+		$game = $this->game->load($this->_game_id);
+		$data["game"] = $game;
+		$data["logs"] = $game->logs;
+		$this->output
+			->set_content_type('text/plain')
+			->set_output($this->smarty->execute("GameLog.tpl", $data, TRUE))
+			;
 	}
 
 }
