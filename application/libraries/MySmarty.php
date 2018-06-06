@@ -35,14 +35,15 @@ class MySmarty extends Smarty
         log_message('debug', "Smarty Class Initialized");
     }
 
-    function view($template, $data = array(), $return = FALSE)
-    {
+	/*
+	 * ヘッダー、フッターを付けない
+	 */
+    function execute($template, $data = array(), $return = FALSE)
+	{
 		$data['BASE_URL'] = base_url(). "/";
 		$data['SITE_URL'] = site_url(). "/";
 		$data['CURRENT_URL'] = current_url();
 		$data['INDEX_PAGE'] = index_page();
-		$data['INCLUDE_PAGE'] = $template;
-		$template = "page_layout.tpl";
         foreach ($data as $key => $val) {
 			$this->assign($key, $val);
 		}
@@ -59,6 +60,13 @@ class MySmarty extends Smarty
 			return $this->fetch($template);
 		}
 		return "";
+	}
+
+    function view($template, $data = array(), $return = FALSE)
+    {
+		$data['INCLUDE_PAGE'] = $template;
+		return $this->execute("page_layout.tpl", $data, $return);
     }
+
 }
 ?>
