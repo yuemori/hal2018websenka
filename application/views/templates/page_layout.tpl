@@ -47,7 +47,10 @@
     // ログ領域の再描画処理
     function refresh_log_area()
     {
-      var requestURL = '{$SITE_URL}GameLog?game_id=1&user_id=1';
+      var requestURL = '{$SITE_URL}GameLog' +
+                       '?game_id=' + {$game_id} +
+                       '&user_id=' + {$user_id} 
+      ;
       var request = new XMLHttpRequest();
 
       request.open('GET', requestURL);
@@ -67,7 +70,11 @@
       if (is_checking) return null;
       is_checking = true;
 
-      var requestURL = '{$SITE_URL}WhatsNew?game_id=1&ti=' + last_check_time;
+      var requestURL = '{$SITE_URL}WhatsNew' + 
+                       '?game_id=' + {$game_id} +
+                       '&user_id=' + {$user_id} +
+                       '&ti=' + last_check_time
+      ;
       var request = new XMLHttpRequest();
       request.open('GET', requestURL);
       request.responseType = 'json';
