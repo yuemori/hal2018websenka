@@ -22,6 +22,20 @@
 				}
 				);
 		}
+
+		public function find_log_by_time(&$latest, $after)
+		{
+			$result = array();
+			foreach ($this->logs as $log) {
+				$ti = new DateTime($log->insert_at, new DateTimeZone('Asia/Tokyo'));
+				$time = $ti->getTimestamp();
+				if ($time <= $after) continue;
+				$latest = $latest > $time ? $latest : $time;
+				$result[] = $log;
+			}
+			return $result;
+		}
+
 	}
 
 	class Game_model extends CI_Model
@@ -40,6 +54,22 @@
 		public function __construct()
 		{
 			$this->load->database();
+		}
+
+		/*!
+		 * 指定時間以降のログを返す
+		 *
+		 * @latest 取得したログの中で一番直近の物の時間を受け取る
+		 * @after  unix_timestamp
+		 */
+		public function findLogByTime(&$latest, $after)
+		{
+			$result = array();
+			$latest = 0;
+			foreach ($this->waves as $wave) {
+				$result = array_merge($result, $wave->find_log_by_time($latest, $after));
+			}
+			return $result;
 		}
 
 		/*!
@@ -134,9 +164,7 @@
 			$ret->members = $CI->members->load($ret->game_id);
 			$ret->logs = $CI->logs->load($ret->game_id);
 
-			echo "<pre>";
 			$ret->waves = Game_model::waveFactory($ret->game_id);
-			echo "</pre>";
 
 			return $ret;
 		}

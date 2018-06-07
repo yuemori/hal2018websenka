@@ -36,9 +36,30 @@ class WhatsNew extends CI_Controller
 			var_dump($obj);
 		}
 
+		if ($this->_last_check_time == 0) {
+			$this->_last_check_time = time(NULL);
+		}
+
+		$is_new = FALSE;
+		$game = $this->game->load($this->_game_id);
+		if (NULL !== $game) {
+			$latest = 0;
+			$logs = $game->findLogByTime($latest, $this->_last_check_time);
+			if (count($logs) != 0) {
+				$is_new = TRUE;
+				$this->_last_check_time = $latest;
+			}
+		} else {
+			$logs = NULL;
+		}
+
+		$object = array(
+						'new' => $is_new,
+						'time' => $this->_last_check_time
+						);
 		$this->output
 			->set_content_type('application/json')
-			->set_output(json_encode(array('new' => TRUE, 'time' => time(NULL))));
+			->set_output(json_encode($object));
 	}
 }
 
