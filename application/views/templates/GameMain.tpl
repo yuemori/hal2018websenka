@@ -19,7 +19,7 @@
       <div class="col-lg">
         <div class="float-right">
           {if $end_of_game}
-            <a class="btn btn-primary mr-2" href="{$SITE_URL}GameJudgement">投票画面へ</a>
+            <a class="btn btn-primary mr-2" href="{$SITE_URL}GameJudgement?game_id={$game_id}&user_id={$user_id}">投票画面へ</a>
           {else}
           {/if}
           <a class="btn btn-secondary" href="{$SITE_URL}GameMain?game_id={$game_id}&user_id={$user_id}#game-log">再読込</a>
