@@ -6,7 +6,7 @@
 <div class="card mt-4" style="width: 100%;">
     <h5 class="card-header">参加者一覧</h5>
     <div class="card-body">
-  {foreach from=$members item=person}
+  {foreach from=$game->members item=person}
     {if $user_id == $person->user_id}
       <div class="card-title">あなたのお題: {$person->word}</div>
       <ul class="list-group list-group-flush">
@@ -17,7 +17,7 @@
     {/if}
   {/foreach}
 
-  {foreach from=$members item=person}
+  {foreach from=$game->members item=person}
     {if $user_id != $person->user_id}
         <li class="list-group-item">
           {$person->nickname}

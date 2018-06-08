@@ -77,12 +77,6 @@ class GameSay extends CI_Controller
 			return $this->_return_to_main(SAY_ERR_INVALID_MESSAGE);
 		}
 
-		// ターンを進める処理
-		// TODO：時間管理とかに変える
-		if ($game->canFinishThisWave()) {
-			$game->gotoNextWave();
-		}
-
 		// 正常に書き込みが完了
 		$this->_return_to_main(SAY_SUCCESS);
 		return ;

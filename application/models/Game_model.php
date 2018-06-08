@@ -46,7 +46,6 @@
 		public $wave;
 		public $max_wave;
 		public $members;  // array of Gamemember_model class
-		public $logs;  // array of Gamelog_model class
 		public $waves;  // array of GameWave
 
 		/*!
@@ -80,6 +79,7 @@
 			$now  = new DateTime('now', new DateTimeZone('Asia/Tokyo'));
 			$interval = $now->getTimestamp() - $start->getTimestamp();
 			$ret = (int)($interval / 60 / Game_model::WAVE_INTERVAL_MINUTE) + 1;
+			return $ret;
 			/*
 			echo "<pre>";
 			var_dump($start->format('Y-m-d H:i:s'));
@@ -90,7 +90,6 @@
 			var_dump($ret);
 			echo "</pre>";
 			*/
-			return $ret;
 		}
 
 		/*!
@@ -114,38 +113,6 @@
 		}
 
 		/*!
-		 * 今現在のターンに発言した履歴のあるユーザーID一覧を配列で取得
-		 */
-		private function getSendedUserInThisWave()
-		{
-			$result = array();
-			foreach ($this->logs as $log) {
-				if ($log->wave != $this->wave) continue;	// 現在進行中のターン以外の発言は無視
-				$result[] = $log->user_id;
-			}
-			return $result;
-		}
-
-		/*!
-		 * ターンを進めて良いか？判定する
-		 */
-		public function canFinishThisWave()
-		{
-			// 今現在のターンに発言した履歴のあるユーザーID一覧を配列で取得
-			$this_wave_sended = $this->getSendedUserInThisWave();
-			if (0 == count($this_wave_sended)) {
-				return false;
-			}
-			// このゲームの参加者一覧を走査、
-			// 全員が発言終了しているか？チェックする
-			foreach ($this->members as $person) {
-				if (in_array($person->user_id, $this_wave_sended)) continue;
-				return false;
-			}
-			return true;
-		}
-
-		/*!
 		 * 指定されたIDのゲームオブジェクトを生成して返す
 		 */
 		public function load($game_id)
@@ -162,8 +129,6 @@
 			$CI->load->model('Gamemember_model', 'members');
 			$CI->load->model('Gamelog_model', 'logs');
 			$ret->members = $CI->members->load($ret->game_id);
-			$ret->logs = $CI->logs->load($ret->game_id);
-
 			$ret->waves = Game_model::waveFactory($ret->game_id);
 
 			return $ret;
@@ -178,9 +143,6 @@
 			$CI->load->model('Gamelog_model', 'logs');
 			$ret = $CI->logs->write($this->game_id, $this->getWave(), $user_id, $message);
 			if (!$ret) return false;
-
-			$CI->load->model('Gamelog_model', 'logs');
-			$this->logs = $CI->logs->load($this->game_id);
 			return true;
 		}
 
