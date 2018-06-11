@@ -18,6 +18,7 @@ CREATE TABLE UserAccount (
 , insert_at DATETIME
 , update_at DATETIME
 , PRIMARY KEY (user_id)
+, UNIQUE INDEX(name)
 ) ENGINE=InnoDB
 ;
 
