@@ -47,6 +47,7 @@
 		public $max_wave;
 		public $members;  // array of Gamemember_model class
 		public $waves;  // array of GameWave
+		public $results;  // array of Gameresult_model class
 
 		/*!
 		 */
@@ -128,10 +129,50 @@
 			$CI =& get_instance();
 			$CI->load->model('Gamemember_model', 'members');
 			$CI->load->model('Gamelog_model', 'logs');
+			$CI->load->model('Gameresult_model', 'results');
+
 			$ret->members = $CI->members->load($ret->game_id);
 			$ret->waves = Game_model::waveFactory($ret->game_id);
+			$ret->results = $CI->results->load($ret->game_id);
 
 			return $ret;
+		}
+
+		/*!
+		 * 投票する
+		 */
+		public function vote($user_id, $accuser_id)
+		{
+			$CI =& get_instance();
+			$CI->load->model('Gameresult_model', 'results');
+			$ret = $CI->results->vote($this->game_id, $user_id, $accuser_id);
+			if (!$ret) return false;
+			return true;
+		}
+
+		/*!
+		 */
+		public function existResult($user_id)
+		{
+			foreach ($this->results as $ret) {
+				if ($user_id == $ret->user_id) {
+					return true;
+				}
+			}
+			return false;
+		}
+
+		/*!
+		 * 参加者全員の投票が完了していたらtrue
+		 */
+		public function isFinishVote()
+		{
+			foreach ($this->members as $member) {
+				if (!$this->existResult($member->user_id)) {
+					return false;
+				}
+			}
+			return true;
 		}
 
 		/*!

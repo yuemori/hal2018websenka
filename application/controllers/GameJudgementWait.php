@@ -1,14 +1,14 @@
 <?php
 /*!
- * 議論終了後の投票画面
- * 参加メンバーをリスト表示して投票を促す
+ * 投票終了後の待機画面
+ * 参加メンバー全員の投票が終わるのを待つ
  *
  * user_id: ログイン中のユーザーID
  * game_id: 進行中のゲームID
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class GameJudgement extends CI_Controller
+class GameJudgementWait extends CI_Controller
 {
 	private $_user_id;
 	private $_game_id;
@@ -42,24 +42,22 @@ class GameJudgement extends CI_Controller
 		$game = $this->game->load($this->_game_id);
 		if (NULL !== $game) {
 			$data["game"] = $game;
+			if ($game->isFinishVote()) {
+				// 全員の投票が完了したら、結果画面へリダイレクト
+				redirect(
+						 sprintf("GameResult?game_id=%d&user_id=%d"
+								 , $this->_game_id
+								 , $this->_user_id
+								 )
+						 );
+			}
 		} else {
 			$data["game"] = NULL;
 		}
-
-		// 既に投票が完了している場合は、投票完了後の待機ページへ飛ばす
-		if ($game->existResult($this->_user_id)) {
-			redirect(
-					 sprintf("GameJudgementWait?game_id=%d&user_id=%d"
-							 , $this->_game_id
-							 , $this->_user_id
-							 )
-					 );
-		}
-
 		$data["user_id"] = $this->_user_id;
 		$data["game_id"] = $this->_game_id;
-		$this->smarty->view("GameJudgement.tpl", $data);
-
+		$this->smarty->view("GameJudgementWait.tpl", $data);
+		return ;
 	}
 }
 
