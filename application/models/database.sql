@@ -153,5 +153,6 @@ CREATE TABLE GameResult (
 , insert_at DATETIME
 , update_at DATETIME
 , PRIMARY KEY (result_id)
+, UNIQUE INDEX(game_id, user_id)
 ) ENGINE=InnoDB
 ;
