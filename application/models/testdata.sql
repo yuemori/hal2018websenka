@@ -82,3 +82,13 @@ VALUES
 , (24, 1, 4, 4, 'ゲームも終わりますね',                 (NOW() - INTERVAL 12 SECOND), NOW())
 , (25, 1, 4, 5, 'そうですね！',                         (NOW() - INTERVAL 11 SECOND), NOW())
 ;
+
+DELETE FROM GameResult;
+INSERT INTO GameResult
+  (game_id, user_id, vote_user_id, insert_at, update_at)
+VALUES
+  (1, 1, 2, NOW(), NOW())
+, (1, 3, 1, NOW(), NOW())
+, (1, 4, 1, NOW(), NOW())
+, (1, 5, 2, NOW(), NOW())
+;
