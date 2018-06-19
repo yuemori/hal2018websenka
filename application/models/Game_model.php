@@ -176,6 +176,37 @@
 		}
 
 		/*!
+		 * 勝敗判定、ワードウルフ側が勝利と判定したらtrue
+		 */
+		public function isWordwolfWin()
+		{
+			// どのユーザーに何票入ったのか？を集計
+			// 得票数降順でソートし、最大得票数を取得する
+			//
+			// ワードウルフに指名されたユーザーが、
+			// この得票数を集めていたらワードウルフの負け
+			// ＊同率１位の場合はワードウルフが負ける様にする（決選投票は無し）
+			$votes = array();  // key => user_id, value = number of votes
+			foreach ($this->results as $ret) {
+				if (isset($votes[$ret->vote_user_id])) {
+					$votes[$ret->vote_user_id]++;
+				} else {
+					$votes[$ret->vote_user_id] = 1;
+				}
+			}
+			arsort($votes, SORT_NUMERIC);
+			$temp = $votes; // array_shift() の呼び出しによる破壊を回避
+			$top_value = array_shift($temp);
+
+			foreach ($votes as $user_id => $value) {
+				if ($value != $top_value) break;
+				if ($this->minority_user_id != $user_id) continue;
+				return false;
+			}
+			return true;
+		}
+
+		/*!
 		 * ユーザーの発言を登録
 		 */
 		public function logWrite($user_id, $message)
