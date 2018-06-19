@@ -56,10 +56,19 @@ class GameJudgement extends CI_Controller
 					 );
 		}
 
+		// ゲームに参加してなかったユーザーからのアクセスの時は投票完了待機画面へ
+		if (!$game->existUser($this->_user_id)) {
+			redirect(
+					 sprintf("GameJudgementWait?game_id=%d&user_id=%d"
+							 , $this->_game_id
+							 , $this->_user_id
+							 )
+					 );
+		}
+
 		$data["user_id"] = $this->_user_id;
 		$data["game_id"] = $this->_game_id;
 		$this->smarty->view("GameJudgement.tpl", $data);
-
 	}
 }
 
