@@ -4,7 +4,6 @@
     投票状態
 
     <ul>
-    {assign var="is_first" value=true}
     {foreach name=loop from=$game->members item=person}
       {assign var="user_id" value=$person->user_id}
       <li>
