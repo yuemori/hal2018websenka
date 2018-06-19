@@ -62,3 +62,5 @@ class LoginCheck extends CI_Controller
 		redirect($url);
 	}
 }
+
+?>

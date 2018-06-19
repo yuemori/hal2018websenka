@@ -52,3 +52,5 @@ class ModeSelect extends CI_Controller
 		$this->smarty->view('ModeSelect.tpl', $data);
 	}
 }
+
+?>

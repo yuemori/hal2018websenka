@@ -59,3 +59,5 @@ class GameMain extends CI_Controller
 	}
 
 }
+
+?>

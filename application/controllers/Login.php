@@ -12,3 +12,5 @@ class Login extends CI_Controller
 		$this->smarty->view("Login.tpl", $data);
 	}
 }
+
+?>
