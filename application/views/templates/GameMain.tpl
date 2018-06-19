@@ -10,7 +10,7 @@
   <div class="col-lg">
     <div class="row">
       <div class="col-lg-8">
-      {if $end_of_game}
+      {if $end_of_game || !$game->existUser($user_id)}
       {else}
         {include file="GameSay.tpl"}
       {/if}

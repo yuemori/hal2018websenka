@@ -138,6 +138,15 @@
 			return $ret;
 		}
 
+		public function existUser($user_id)
+		{
+			foreach ($this->members as $mem) {
+				if ($mem->user_id != $user_id) continue;
+				return true;
+			}
+			return false;
+		}
+
 		/*!
 		 * 投票する
 		 */

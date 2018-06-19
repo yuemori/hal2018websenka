@@ -13,6 +13,7 @@ define('SAY_ERR_NO_INPUT',        1);
 define('SAY_ERR_INVALID_MESSAGE', 2);
 define('SAY_ERR_GAME_NOT_FOUND',  3);
 define('SAY_ERR_WAVE_MISSMATCH',  4);
+define('SAY_ERR_NOT_PERMIT',      5);
 define('SAY_ERR_GAME_FINISHED',   10);
 
 
@@ -55,6 +56,10 @@ class GameSay extends CI_Controller
 			return $this->_return_to_main(SAY_ERR_GAME_NOT_FOUND);
 		}
 
+		if (!$game->existUser($this->_user_id)) {
+			return $this->_return_to_main(SAY_ERR_NOT_PERMIT);
+		}
+
 		if ($game->endOfGame()) {
 			// ターンが進んだ事によって終了条件を満たす時
 			// 他の誰かがターンを進めた事で終了条件が満たされた時も通る
@@ -95,3 +100,5 @@ class GameSay extends CI_Controller
 	}
 
 }
+
+?>
