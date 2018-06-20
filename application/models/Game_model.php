@@ -3,6 +3,12 @@
  * Game_model
  *
  */
+
+// Game_model::status values
+define('GAME_STATUS_READY',   0);
+define('GAME_STATUS_STARTED', 1);
+
+
 	class GameWave
 	{
 		public $wave;
@@ -43,8 +49,7 @@
 		// ゲーム進行の区切りを何分にするか？
 		private const WAVE_INTERVAL_MINUTE = 5;
 
-		public $wave;
-		public $max_wave;
+		public $status;
 		public $members;  // array of Gamemember_model class
 		public $waves;  // array of GameWave
 		public $results;  // array of Gameresult_model class
@@ -81,16 +86,6 @@
 			$interval = $now->getTimestamp() - $start->getTimestamp();
 			$ret = (int)($interval / 60 / Game_model::WAVE_INTERVAL_MINUTE) + 1;
 			return $ret;
-			/*
-			echo "<pre>";
-			var_dump($start->format('Y-m-d H:i:s'));
-			var_dump($start->getTimestamp());
-			var_dump($now->format('Y-m-d H:i:s'));
-			var_dump($now->getTimestamp());
-			var_dump($interval);
-			var_dump($ret);
-			echo "</pre>";
-			*/
 		}
 
 		/*!
@@ -111,6 +106,24 @@
 			$this->db->where('game_id', $this->game_id);
 			$this->db->update('Game');
 			return true;
+		}
+
+		/*!
+		 * 開始前状態のゲームの取得
+		 */
+		public function load_list()
+		{
+			// 読み込み
+			$this->db->select('game_id');
+			$this->db->from('Game');
+			$this->db->where('status', GAME_STATUS_READY);
+			$query = $this->db->get();
+
+			$result = array();
+			foreach ($query->result('Game_model') as $row) {
+				$result[] = $this->load($row->game_id);
+			}
+			return $result;
 		}
 
 		/*!
@@ -137,6 +150,19 @@
 
 			return $ret;
 		}
+
+		/*!
+		 * ゲームへの参加
+		 */
+		public function join($user_id)
+		{
+			return true;
+		}
+		public function countOfMembers()
+		{
+			return count($this->members);
+		}
+
 
 		public function existUser($user_id)
 		{
