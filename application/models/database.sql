@@ -69,8 +69,6 @@ CREATE TABLE KeywordGroups (
 # ゲーム進行管理
 #
 # game_id: ゲーム毎に振られる一意なID
-# wave: ゲーム進行ターン数
-# max_wave: ゲームの終了条件になる最大ターン数
 # status: 現在の状態
 # group_id: このゲームのお題として選ばれたワードのグループID
 # minority_user_id: このゲームにおける少数派ユーザーID
@@ -88,6 +86,7 @@ CREATE TABLE Game (
 , start_at DATETIME
 , end_at DATETIME
 , PRIMARY KEY (game_id)
+, INDEX (status)
 ) ENGINE=InnoDB
 ;
 
