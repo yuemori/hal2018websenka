@@ -5,10 +5,114 @@
  */
 
 // Game_model::status values
-define('GAME_STATUS_READY',   0);
-define('GAME_STATUS_STARTED', 1);
+define('GAME_STATUS_READY',   0); // 初期化前のゲーム
+define('GAME_STATUS_STARTED', 1); // ゲーム中
 
 
+	/*!
+	 * ゲームを初期化して始めれる様にする手続きを担う
+	 */
+	class GameInitializer extends CI_Model
+    {
+		private const GAME_START_INTERVAL = 3; // ゲーム開始までの待機時間
+		private const GAME_TIME = 300; // ゲームのプレー時間
+
+		/*!
+		 */
+		public function __construct()
+		{
+			$this->load->database();
+		}
+
+		/*!
+		 * @game: Game_model class
+		 */
+		public function execute($game)
+		{
+			/*
+			mt_srand($game->game_id);
+			*/
+			$this->db->query('SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;');
+			$this->db->trans_begin();
+			// このゲームで利用するワードの選定
+			$words = $this->lottery_keyword();
+			// このゲームのワードウルフを決定
+			$wordwolf = $this->lottery_wordwolf($game);
+			// 参加者にワードを配る
+			$this->deal($game->members, $words, $wordwolf);
+			// 開始時間、終了時間の決定、ステータスの更新
+			$this->finalize($game, $words, $wordwolf);
+
+			if (!$this->db->trans_status()) {
+				$this->db->trans_rollback();
+				return false;
+			}
+			$this->db->trans_commit();
+			return true;
+		}
+
+		/*!
+		 */
+		private function deal($members, $words, $wordwolf)
+		{
+			$offset = mt_rand(0, 1);
+			$minority_word = &$words[$offset];
+			$normal_word = &$words[($offset + 1) % count($words)];
+			foreach ($members as $member) {
+				if ($member->user_id == $wordwolf->user_id) {
+					$member->setWord($minority_word->word_id);
+				} else {
+					$member->setWord($normal_word->word_id);
+				}
+			}
+			return true;
+		}
+
+		/*!
+		 */
+		private function lottery_wordwolf($game)
+		{
+			$offset = mt_rand(0, count($game->members) - 1);
+			return $game->members[$offset];
+		}
+
+		/*!
+		 */
+		private function lottery_keyword()
+		{
+			$CI =& get_instance();
+			$CI->load->model('Keywordgroups_model', 'keywordgroups');
+			$gids = $CI->keywordgroups->enum_ids();
+			$offset = mt_rand(0, count($gids) - 1);
+			$group_id = $gids[$offset]; // 今回利用するキーワードグループのID
+			$words = $CI->keywordgroups->load($group_id);
+			return $words;
+		}
+
+		/*!
+		 */
+		private function finalize($game, $words, $wordwolf)
+		{
+			$this->db->set('group_id', $words[0]->group_id);
+			$this->db->set('minority_user_id', $wordwolf->user_id);
+			$this->db->set('status', GAME_STATUS_STARTED); 
+			$this->db->set('start_at'
+						   , sprintf("(NOW() + INTERVAL %d SECOND)"
+									 , GameInitializer::GAME_START_INTERVAL)
+						   , FALSE);
+			$this->db->set('end_at'
+						   , sprintf("(NOW() + INTERVAL %d SECOND)"
+									 , GameInitializer::GAME_START_INTERVAL + GameInitializer::GAME_TIME)
+						   , FALSE);
+			$this->db->where('game_id', $game->game_id);
+			$ret = $this->db->update('Game');
+			return $ret;
+		}
+	}
+
+	/*!
+	 * 一つのゲームを時間で分割して管理する一つの区切り
+	 */
 	class GameWave
 	{
 		public $wave;
@@ -44,6 +148,10 @@ define('GAME_STATUS_STARTED', 1);
 
 	}
 
+	/*!
+	 * 一つのゲームを表現する
+	 * 開始前、ゲーム中、終了後
+	 */
 	class Game_model extends CI_Model
 	{
 		// ゲーム進行の区切りを何分にするか？
@@ -51,7 +159,7 @@ define('GAME_STATUS_STARTED', 1);
 
 		public $status;
 		public $members;  // array of Gamemember_model class
-		public $waves;  // array of GameWave
+		public $waves;    // array of GameWave
 		public $results;  // array of Gameresult_model class
 
 		/*!
@@ -156,14 +264,27 @@ define('GAME_STATUS_STARTED', 1);
 		 */
 		public function join($user_id)
 		{
-			return true;
+			$this->db->set('game_id', $this->game_id);
+			$this->db->set('user_id', $user_id);
+			$this->db->set('word_id', 0);
+			$ret = $this->db->insert('GameMember');
+
+			$CI =& get_instance();
+			$CI->load->model('Gamemember_model', 'members');
+			$this->members = $CI->members->load($this->game_id);
+			return $ret;
 		}
+
+		/*!
+		 * for view template method
+		 */
 		public function countOfMembers()
 		{
 			return count($this->members);
 		}
 
-
+		/*!
+		 */
 		public function existUser($user_id)
 		{
 			foreach ($this->members as $mem) {
