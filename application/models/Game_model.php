@@ -198,6 +198,15 @@ define('GAME_STATUS_STARTED', 1); // ゲーム中
 
 		/*!
 		 */
+		public function isStarted()
+		{
+			$start= new DateTime($this->start_at, new DateTimeZone('Asia/Tokyo'));
+			$now  = new DateTime('now', new DateTimeZone('Asia/Tokyo'));
+			return ($now > $start);
+		}
+
+		/*!
+		 */
 		public function endOfGame()
 		{
 			$end = new DateTime($this->end_at, new DateTimeZone('Asia/Tokyo'));

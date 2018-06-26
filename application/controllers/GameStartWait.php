@@ -38,6 +38,19 @@ class GameStartWait extends CI_Controller
 			var_dump($obj);
 		}
 
+		$game = $this->game->load($this->_game_id);
+		if (NULL !== $game) {
+			if ($game->isStarted()) {
+				redirect(
+						 sprintf("GameMain?game_id=%d&user_id=%d"
+								 , $this->_game_id
+								 , $this->_user_id
+								 )
+						 );
+				return true;
+			}
+		}
+
 		$data["user_id"] = $this->_user_id;
 		$data["game_id"] = $this->_game_id;
 		$this->smarty->view("GameStartWait.tpl", $data);
