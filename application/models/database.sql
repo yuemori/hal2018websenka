@@ -80,9 +80,11 @@ DROP TABLE IF EXISTS Game;
 CREATE TABLE Game (
   game_id INT NOT NULL AUTO_INCREMENT
 , status INT NOT NULL
-, group_id INT NOT NULL
-, minority_user_id INT NOT NULL
+, group_id INT
+, minority_user_id INT
 , minimum INT NOT NULL
+, playtime INT NOT NULL
+, creator_user_id INT NOT NULL
 , start_at DATETIME
 , end_at DATETIME
 , PRIMARY KEY (game_id)
