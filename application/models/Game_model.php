@@ -402,6 +402,18 @@ define('GAME_STATUS_STARTED', 1); // ゲーム中
 			return $result;
 		}
 
+		/*!
+		 * 新規登録
+		 */
+		public function regist($creator_user_id, $minimum, $playtime)
+		{
+			$this->db->set('creator_user_id', $creator_user_id);
+			$this->db->set('status', GAME_STATUS_READY);
+			$this->db->set('minimum', $minimum);
+			$this->db->set('playtime', $playtime);
+			$this->db->insert('Game');
+			return $this->db->insert_id();
+		}
 	}
 
 ?>
