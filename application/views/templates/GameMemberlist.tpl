@@ -12,7 +12,6 @@
       <ul class="list-group list-group-flush">
         <li class="list-group-item">
           {$person->nickname}
-          &nbsp;({$person->word})
         </li>
     {/if}
   {/foreach}
@@ -21,8 +20,6 @@
     {if $user_id != $person->user_id}
         <li class="list-group-item">
           {$person->nickname}
-
-          &nbsp;({$person->word})
         </li>
     {/if}
   {/foreach}
