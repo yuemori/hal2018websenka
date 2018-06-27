@@ -15,7 +15,6 @@ define('GAME_STATUS_STARTED', 1); // ゲーム中
 	class GameInitializer extends CI_Model
     {
 		private const GAME_START_INTERVAL = 3; // ゲーム開始までの待機時間
-		private const GAME_TIME = 300; // ゲームのプレー時間
 
 		/*!
 		 */
@@ -102,7 +101,7 @@ define('GAME_STATUS_STARTED', 1); // ゲーム中
 						   , FALSE);
 			$this->db->set('end_at'
 						   , sprintf("(NOW() + INTERVAL %d SECOND)"
-									 , GameInitializer::GAME_START_INTERVAL + GameInitializer::GAME_TIME)
+									 , GameInitializer::GAME_START_INTERVAL + $game->playtime)
 						   , FALSE);
 			$this->db->where('game_id', $game->game_id);
 			$ret = $this->db->update('Game');
