@@ -1,25 +1,40 @@
 <?php
+/*!
+ * 新規ユーザー登録画面
+ */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Regist extends CI_Controller {
+define('ERR_NO_ERROR',            0);
+define('ERR_USERNAME_INVALID',   10);
+define('ERR_USERNAME_DUPLICATE', 11);
+define('ERR_PASSWORD_INVALID',   20);
+define('ERR_NICKNAME_INVALID',   30);
+define('ERR_NICKNAME_DUPLICATE', 31);
+define('ERR_UNKNOWN',            99);
 
-	/**
-	 * Index Page for this controller.
-	 *
-	 * Maps to the following URL
-	 * 		http://example.com/index.php/welcome
-	 *	- or -
-	 * 		http://example.com/index.php/welcome/index
-	 *	- or -
-	 * Since this controller is set as the default controller in
-	 * config/routes.php, it's displayed at http://example.com/
-	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
-	 * @see https://codeigniter.com/user_guide/general/urls.html
+/*!
+ */
+class Regist extends CI_Controller
+{
+	/*!
+	 */
+	public function __construct()
+	{
+		parent::__construct();
+	}
+
+	/*!
 	 */
 	public function index()
 	{
-		$this->load->view('Regist.php');
+		// クリックジャッキング対策
+		header('X-FRAME-OPTIONS: SAMEORIGIN');
+
+		$data["error"] = $this->input->get('error');
+		$this->smarty->view("Regist.tpl", $data);
+
+//	<a href="ModeSelect');">登録完了</a><br />
 	}
 }
+
+?>
