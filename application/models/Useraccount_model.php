@@ -45,11 +45,30 @@ require_once dirname(__FILE__). '/Game_model.php';
 		}
 
 		/*!
+		 * 登録失敗時の検証用
+		 */
+		public function exist_by_username($name)
+		{
+			$this->db->select('user_id');
+			$this->db->from('UserAccount');
+			$this->db->where('name', $name);
+			$query = $this->db->get();
+			return ($query->first_row('Useraccount_model') == NULL ? false : true);
+		}
+		public function exist_by_nickname($nickname)
+		{
+			$this->db->select('user_id');
+			$this->db->from('UserAccount');
+			$this->db->where('nickname', $nickname);
+			$query = $this->db->get();
+			return ($query->first_row('Useraccount_model') == NULL ? false : true);
+		}
+
+		/*!
 		 * 新規登録
 		 */
-		public function register($user_id, $nickname, $name, $pass)
+		public function register($name, $pass, $nickname)
 		{
-			$this->db->set('user_id', $user_id);
 			$this->db->set('nickname', $nickname);
 			$this->db->set('name', $name);
 			$this->db->set('pass', md5($pass));

@@ -1,4 +1,5 @@
 {strip}
+
 <div>
   <form method="post" action="{$SITE_URL}RegistCheck">
     <div>
