@@ -30,9 +30,6 @@ class Regist extends CI_Controller
 		// クリックジャッキング対策
 		header('X-FRAME-OPTIONS: SAMEORIGIN');
 
-		$data["error"] = $this->input->get('error');
-		$this->smarty->view("Regist.tpl", $data);
-
-//	<a href="ModeSelect');">登録完了</a><br />
+		$this->smarty->view("Regist.tpl");
 	}
 }

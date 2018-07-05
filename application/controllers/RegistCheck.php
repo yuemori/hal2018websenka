@@ -47,10 +47,11 @@ class RegistCheck extends CI_Controller
 	 */
 	public function index()
 	{
+		$registed_id = 0;
 		$errors = $this->_validate();
 		if (count($errors) == 0) {
-			if ($this->users->register($this->_username, $this->_password, $this->_nickname)) {
-				echo "+++ INSERT OK!!\n";
+			$registed_id = $this->users->register($this->_username, $this->_password, $this->_nickname);
+			if (NULL !== $registed_id) {
 			} else {
 				if ($this->users->exist_by_username($this->_username)) {
 					$errors[] = ERR_USERNAME_DUPLICATE;
@@ -61,17 +62,13 @@ class RegistCheck extends CI_Controller
 			}
 		}
 		$object = array(
+						'result' => count($errors) == 0 ? TRUE: FALSE,
+						'user_id'=> $registed_id,
 						'errors' => $errors
 						);
-		echo json_encode($object);
-		return ;
 		$this->output
 			->set_content_type('application/json')
 			->set_output(json_encode($object));
-		
-
-//		$this->smarty->view("Regist.tpl", $data);
-
-//	<a href="ModeSelect');">登録完了</a><br />
+		return ;
 	}
 }
