@@ -11,6 +11,10 @@
 <div>
   <a href="{$SITE_URL}GameHistory?user_id={$user_id}">過去の結果</a>
 </div>
+
+<div>
+  <a href="{$SITE_URL}WordRegister?user_id={$user_id}">新しいワードの登録</a>
+</div>
 <div>
   <a href="{$SITE_URL}Login">ログアウト</a>
 </div>
