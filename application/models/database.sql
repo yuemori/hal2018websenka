@@ -52,11 +52,13 @@ CREATE TABLE Keyword (
 # ＊キーワードをASCII昇順でソートして連結した物のMD5
 #
 # group_id: キーワードのペアに付与されるグループ識別子
+# register_user_id: 登録者のユーザーID
 # md5sum: 同一グループのキーワードを全て連結して算出したMD5
 #
 DROP TABLE IF EXISTS KeywordGroups;
 CREATE TABLE KeywordGroups (
   group_id INT NOT NULL
+, register_user_id INT NOT NULL
 , md5sum VARCHAR(32) CHARACTER SET ascii NOT NULL
 , PRIMARY KEY (group_id)
 , UNIQUE INDEX(md5sum)
@@ -73,6 +75,8 @@ CREATE TABLE KeywordGroups (
 # group_id: このゲームのお題として選ばれたワードのグループID
 # minority_user_id: このゲームにおける少数派ユーザーID
 # minimum: 最低参加人数制限
+# playtime: ゲームの制限時間（秒単位）
+# creator_user_id: ルーム作成者のユーザーID
 # start_at: ゲーム開始時間
 # end_at: ゲーム終了時間
 #
