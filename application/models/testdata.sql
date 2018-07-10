@@ -29,12 +29,12 @@ VALUES
 
 DELETE FROM KeywordGroups;
 INSERT INTO KeywordGroups
-  (group_id, md5sum)
+  (group_id, register_user_id, md5sum)
 VALUES
-  (1, MD5('ワカメ豆腐'))
-, (2, MD5('コーヒー紅茶'))
-, (3, MD5('オセロ囲碁'))
-, (4, MD5('プール露天風呂'))
+  (1, 10, MD5('ワカメ豆腐'))
+, (2, 10, MD5('コーヒー紅茶'))
+, (3,  1, MD5('オセロ囲碁'))
+, (4, 10, MD5('プール露天風呂'))
 ;
 
 
