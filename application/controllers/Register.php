@@ -33,3 +33,5 @@ class Register extends CI_Controller
 		$this->smarty->view("Register.tpl");
 	}
 }
+
+?>

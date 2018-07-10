@@ -49,3 +49,5 @@ class GameLog extends CI_Controller
 	}
 
 }
+
+?>

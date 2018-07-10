@@ -72,3 +72,5 @@ class RegisterCheck extends CI_Controller
 		return ;
 	}
 }
+
+?>
