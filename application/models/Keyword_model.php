@@ -33,6 +33,18 @@
 			$query = $this->db->get();
 			return $query->result('Keyword_model');
 		}
+
+		/*!
+		 * 単語の新規登録
+		 *
+		 * $group_id: グループのID
+		 * $word: 単語
+		 * @retval (int) 0: 失敗, それ以外: 新しく追加された単語のID
+		 */
+		public function register($new_group_id, $word)
+		{
+			return 0;
+		}
 	}
 
 ?>
