@@ -4,10 +4,10 @@
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-require_once dirname(__FILE__). '/Regist.php';
+require_once dirname(__FILE__). '/Register.php';
 
 
-class RegistCheck extends CI_Controller
+class RegisterCheck extends CI_Controller
 {
 	private $_username;
 	private $_password;
@@ -47,11 +47,11 @@ class RegistCheck extends CI_Controller
 	 */
 	public function index()
 	{
-		$registed_id = 0;
+		$registered_id = 0;
 		$errors = $this->_validate();
 		if (count($errors) == 0) {
-			$registed_id = $this->users->register($this->_username, $this->_password, $this->_nickname);
-			if (NULL !== $registed_id) {
+			$registered_id = $this->users->register($this->_username, $this->_password, $this->_nickname);
+			if (NULL !== $registered_id) {
 			} else {
 				if ($this->users->exist_by_username($this->_username)) {
 					$errors[] = ERR_USERNAME_DUPLICATE;
@@ -63,7 +63,7 @@ class RegistCheck extends CI_Controller
 		}
 		$object = array(
 						'result' => count($errors) == 0 ? TRUE: FALSE,
-						'user_id'=> $registed_id,
+						'user_id'=> $registered_id,
 						'errors' => $errors
 						);
 		$this->output
