@@ -34,7 +34,7 @@ define('GAME_STATUS_STARTED', 1); // ゲーム中
 			$this->db->query('SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;');
 			$this->db->trans_begin();
 			// このゲームで利用するワードの選定
-			$words = $this->lottery_keyword();
+			$words = $this->lottery_keyword($game->members);
 			// このゲームのワードウルフを決定
 			$wordwolf = $this->lottery_wordwolf($game);
 			// 参加者にワードを配る
@@ -77,11 +77,20 @@ define('GAME_STATUS_STARTED', 1); // ゲーム中
 
 		/*!
 		 */
-		private function lottery_keyword()
+		private function lottery_keyword($members)
 		{
 			$CI =& get_instance();
 			$CI->load->model('Keywordgroups_model', 'keywordgroups');
-			$gids = $CI->keywordgroups->enum_ids();
+
+			// ゲームの公正さを保つために
+			// このゲームへの参加者が登録したワードはなるべく選ばれない様に処理する
+			// ゲーム参加者が登録したワードを除外した結果、
+			// 全てのワードが使えない時は諦めて適当に選ぶ
+			$members_user_id = array();
+			foreach ($members as $member) {
+				$members_user_id[] = $member->user_id;
+			}
+			$gids = $CI->keywordgroups->enum_ids($members_user_id);
 			$offset = mt_rand(0, count($gids) - 1);
 			$group_id = $gids[$offset]; // 今回利用するキーワードグループのID
 			$words = $CI->keywordgroups->load($group_id);

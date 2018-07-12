@@ -28,17 +28,23 @@
 		}
 
 		/*!
+		 * filter_user_id_array にユーザーIDの一覧を渡すと、
+		 * 可能な限りそれらのユーザーが登録したワードを除外して返そうとする
 		 */
-		public function enum_ids()
+		public function enum_ids($filter_user_id_array)
 		{
-			$this->db->select('group_id');
+			$this->db->select('group_id, register_user_id');
 			$this->db->from('KeywordGroups');
 			$query = $this->db->get();
-			$result = array();
+			$filter_result = array();
+			$full_result = array();
 			foreach ($query->result() as $row) {
-				$result[] = $row->group_id;
+				if (!in_array($row->register_user_id, $filter_user_id_array)) {
+					$filter_result[] = $row->group_id;
+				}
+				$full_result[] = $row->group_id;
 			}
-			return $result;
+			return count($filter_result) == 0 ? $full_result : $filter_result;
 		}
 	}
 
