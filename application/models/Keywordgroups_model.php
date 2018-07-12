@@ -82,11 +82,16 @@
 			// KeywordGroups テーブルにレコードをINSERT成功したら、
 			// 責任持ってKeywordテーブルに２つのレコードを登録すること！
 
-			// TODO: DBへ書き込み KeywordGroups table.
-			//       ここで新しく振られたIDは、下記単語の登録時に利用します。
-			$new_group_id = 0;
+			// DBへ書き込み KeywordGroups table.
+			// ここで新しく振られたIDは、下記単語の登録時に利用します。
+			$this->db->set('register_user_id', $register_user_id);
+			$this->db->set('md5sum', $check_sum);
+			if (!$this->db->insert('KeywordGroups')) {
+				return false;
+			}
+			$new_group_id = $this->db->insert_id();
 
-			// TODO: DBへ書き込み Keyword table.
+			// DBへ書き込み Keyword table.
 			$CI =& get_instance();
 			$CI->load->model('Keyword_model', 'keyword');
 			foreach ($word_array as $word) {
