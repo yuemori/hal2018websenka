@@ -141,16 +141,40 @@ class WordRegister extends CI_Controller
 			throw new Exception("word1 and word2 equal ", WordRegister::ERR_WORD_EQUAL);
 		}
 
-		// TODO: 入力されたパラメータの検証
-		//       ・最低限の長さがあるか？
-		//       ・特定の長さを超えていないか？
-		//
-		// エラーは以下の形で返す
-		// throw new Exception("エラー内容", WordRegister::UNKNOWN);
+		$ret = $this->_word_length_validation($this->_word1);
+		if ($ret < 0) {
+			throw new Exception("word1 is short", WordRegister::ERR_WORD1_LENGTH_MIN);
+		}
+		if ($ret > 0) {
+			throw new Exception("word1 is long", WordRegister::ERR_WORD1_LENGTH_MAX);
+		}
+
+		$ret = $this->_word_length_validation($this->_word2);
+		if ($ret < 0) {
+			throw new Exception("word2 is short", WordRegister::ERR_WORD2_LENGTH_MIN);
+		}
+		if ($ret > 0) {
+			throw new Exception("word2 is long", WordRegister::ERR_WORD2_LENGTH_MAX);
+		}
 
 		return true;
 	}
 
+	/*!
+	 * 入力されたワードが単語として許可できる長さか？判定する
+	 *
+	 * @retval (int)
+	 *   0 未満：短すぎる
+	 *     0 ==：許可する長さ
+	 *   1 以上：長過ぎる
+	 */
+	private function _word_length_validation($input)
+	{
+		$len = mb_strlen($input, "UTF-8");
+		if ($len < WordRegister::WORD_LENGTH_MIN) return -1;
+		if ($len > WordRegister::WORD_LENGTH_MAX) return 1;
+		return 0;
+	}
 
 }
 
