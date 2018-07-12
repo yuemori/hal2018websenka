@@ -3,7 +3,7 @@
 新規ユーザーの登録
 </div>
 <div>
-  <form id="inputform" method="post" action="{$SITE_URL}RegistCheck">
+  <form id="inputform" method="post" action="{$SITE_URL}RegisterCheck">
     <div>
       ユーザー名：
       <input name="name" type="text" value="" />
@@ -54,7 +54,7 @@
     {
       var form = document.getElementById("inputform");
       var body = formToHTTP(form);
-      var requestURL = '{$SITE_URL}RegistCheck';
+      var requestURL = '{$SITE_URL}RegisterCheck';
       var request = new XMLHttpRequest();
       request.open('POST', requestURL);
       request.responseType = 'json';
@@ -84,7 +84,7 @@
 
     /*
      * エラー番号に対応した文字列を返す
-     * エラー定義は controller/Regist.php を参照
+     * エラー定義は controller/Register.php を参照
      */
     function getError(err)
     {

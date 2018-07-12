@@ -21,6 +21,6 @@
 {/if}
 
 <div>
-  <a href="{$SITE_URL}Regist">新規登録はコチラ</a><br />
+  <a href="{$SITE_URL}Register">新規登録はコチラ</a><br />
 </div>
 {/strip}

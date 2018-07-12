@@ -14,7 +14,7 @@ define('ERR_UNKNOWN',            99);
 
 /*!
  */
-class Regist extends CI_Controller
+class Register extends CI_Controller
 {
 	/*!
 	 */
@@ -30,6 +30,6 @@ class Regist extends CI_Controller
 		// クリックジャッキング対策
 		header('X-FRAME-OPTIONS: SAMEORIGIN');
 
-		$this->smarty->view("Regist.tpl");
+		$this->smarty->view("Register.tpl");
 	}
 }
