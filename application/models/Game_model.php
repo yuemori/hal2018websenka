@@ -104,14 +104,12 @@ define('GAME_STATUS_STARTED', 1); // ゲーム中
 			$this->db->set('group_id', $words[0]->group_id);
 			$this->db->set('minority_user_id', $wordwolf->user_id);
 			$this->db->set('status', GAME_STATUS_STARTED); 
-			$this->db->set('start_at'
-						   , sprintf("(NOW() + INTERVAL '%d SECOND')"
-									 , GameInitializer::GAME_START_INTERVAL)
-						   , FALSE);
-			$this->db->set('end_at'
-						   , sprintf("(NOW() + INTERVAL '%d SECOND')"
-									 , GameInitializer::GAME_START_INTERVAL + $game->playtime)
-						   , FALSE);
+			$start_at = new DateTime('now', new DateTimeZone('Asia/Tokyo'));
+			$start_at->modify(sprintf("+%s second", GameInitializer::GAME_START_INTERVAL));
+			$end_at = new DateTime('now', new DateTimeZone('Asia/Tokyo'));
+			$end_at->modify(sprintf("+%s second", GameInitializer::GAME_START_INTERVAL + $game->playtime));
+			$this->db->set('start_at', $start_at->format("Y/m/d H:i:s"));
+			$this->db->set('end_at', $end_at->format("Y/m/d H:i:s"));
 			$this->db->where('game_id', $game->game_id);
 			$ret = $this->db->update('game');
 			return $ret;
