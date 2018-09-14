@@ -113,7 +113,7 @@ define('GAME_STATUS_STARTED', 1); // ゲーム中
 									 , GameInitializer::GAME_START_INTERVAL + $game->playtime)
 						   , FALSE);
 			$this->db->where('game_id', $game->game_id);
-			$ret = $this->db->update('Game');
+			$ret = $this->db->update('game');
 			return $ret;
 		}
 	}
@@ -230,7 +230,7 @@ define('GAME_STATUS_STARTED', 1); // ゲーム中
 			$this->wave ++;
 			$this->db->set('wave', $this->wave);
 			$this->db->where('game_id', $this->game_id);
-			$this->db->update('Game');
+			$this->db->update('game');
 			return true;
 		}
 
@@ -241,7 +241,7 @@ define('GAME_STATUS_STARTED', 1); // ゲーム中
 		{
 			// 読み込み
 			$this->db->select('game_id');
-			$this->db->from('Game');
+			$this->db->from('game');
 			$this->db->where('status', GAME_STATUS_READY);
 			$query = $this->db->get();
 
@@ -259,7 +259,7 @@ define('GAME_STATUS_STARTED', 1); // ゲーム中
 		{
 			// 読み込み
 			$this->db->select('*');
-			$this->db->from('Game');
+			$this->db->from('game');
 			$this->db->where('game_id', $game_id);
 			$query = $this->db->get();
 			$ret = $query->first_row('Game_model');
@@ -285,7 +285,7 @@ define('GAME_STATUS_STARTED', 1); // ゲーム中
 			$this->db->set('game_id', $this->game_id);
 			$this->db->set('user_id', $user_id);
 			$this->db->set('word_id', 0);
-			$ret = $this->db->insert('GameMember');
+			$ret = $this->db->insert('game_member');
 
 			$CI =& get_instance();
 			$CI->load->model('Gamemember_model', 'members');
@@ -421,7 +421,7 @@ define('GAME_STATUS_STARTED', 1); // ゲーム中
 			$this->db->set('status', GAME_STATUS_READY);
 			$this->db->set('minimum', $minimum);
 			$this->db->set('playtime', $playtime);
-			$this->db->insert('Game');
+			$this->db->insert('game');
 			return $this->db->insert_id('game_game_id_seq');
 		}
 	}

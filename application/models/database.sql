@@ -9,9 +9,9 @@
 -- insert_at: 登録日時
 -- update_at: 最終更新日時
 --
-DROP TABLE IF EXISTS "UserAccount";
+DROP TABLE IF EXISTS user_account;
 
-CREATE TABLE "UserAccount" (
+CREATE TABLE user_account (
   user_id SERIAL
 , nickname VARCHAR(255) NOT NULL
 , name VARCHAR(255) NOT NULL
@@ -20,9 +20,9 @@ CREATE TABLE "UserAccount" (
 , update_at TIMESTAMP
 );
 
-CREATE UNIQUE INDEX unique_name_on_user_account ON "UserAccount" (name);
+CREATE UNIQUE INDEX unique_name_on_user_account ON user_account (name);
 
-CREATE UNIQUE INDEX unique_nickname_on_user_account ON "UserAccount" (nickname);
+CREATE UNIQUE INDEX unique_nickname_on_user_account ON user_account (nickname);
 
 --
 -- 登録キーワードリスト
@@ -33,9 +33,9 @@ CREATE UNIQUE INDEX unique_nickname_on_user_account ON "UserAccount" (nickname);
 -- insert_at: 登録日時
 -- update_at: 最終更新日時
 --
-DROP TABLE IF EXISTS "Keyword";
+DROP TABLE IF EXISTS keyword;
 
-CREATE TABLE "Keyword" (
+CREATE TABLE keyword (
   word_id SERIAL
 , group_id INT NOT NULL
 , word VARCHAR(255) NOT NULL
@@ -44,13 +44,13 @@ CREATE TABLE "Keyword" (
 , PRIMARY KEY (word_id)
 );
 
-CREATE UNIQUE INDEX unique_group_id_and_word_on_keyword ON "Keyword" (group_id, word);
+CREATE UNIQUE INDEX unique_group_id_and_word_on_keyword ON keyword (group_id, word);
 
 --
 -- テストデータ
 --
 
-INSERT INTO "Keyword"
+INSERT INTO keyword
   (word_id, group_id, word, insert_at, update_at)
 VALUES
   (1, 1, '豆腐', NOW(), NOW())
@@ -71,22 +71,22 @@ VALUES
 -- register_user_id: 登録者のユーザーID
 -- md5sum: 同一グループのキーワードを全て連結して算出したMD5
 --
-DROP TABLE IF EXISTS "KeywordGroups";
+DROP TABLE IF EXISTS keyword_groups;
 
-CREATE TABLE "KeywordGroups" (
+CREATE TABLE keyword_groups (
   group_id INT NOT NULL
 , register_user_id INT NOT NULL
 , md5sum VARCHAR(32) NOT NULL
 , PRIMARY KEY (group_id)
 );
 
-CREATE UNIQUE INDEX md5sum ON "KeywordGroups" (md5sum);
+CREATE UNIQUE INDEX md5sum ON keyword_groups (md5sum);
 
 --
 -- テストデータ
 --
 
-INSERT INTO "KeywordGroups"
+INSERT INTO keyword_groups
   (group_id, register_user_id, md5sum)
 VALUES
   (1, 10, MD5('ワカメ豆腐'))
@@ -108,9 +108,9 @@ VALUES
 -- start_at: ゲーム開始時間
 -- end_at: ゲーム終了時間
 --
-DROP TABLE IF EXISTS "Game";
+DROP TABLE IF EXISTS game;
 
-CREATE TABLE "Game" (
+CREATE TABLE game (
   game_id SERIAL
 , status INT NOT NULL
 , group_id INT
@@ -123,7 +123,7 @@ CREATE TABLE "Game" (
 , PRIMARY KEY (game_id)
 );
 
-CREATE INDEX status_on_game ON "Game" (status);
+CREATE INDEX status_on_game ON game (status);
 
 --
 -- 参加者情報
@@ -132,15 +132,15 @@ CREATE INDEX status_on_game ON "Game" (status);
 -- user_id: このゲームに参加しているユーザーのID
 -- word_id: このユーザーに対して公開されたキーワードID
 --
-DROP TABLE IF EXISTS "GameMember";
+DROP TABLE IF EXISTS game_member;
 
-CREATE TABLE "GameMember" (
+CREATE TABLE game_member (
   game_id INT NOT NULL
 , user_id INT NOT NULL
 , word_id INT NOT NULL
 );
 
-CREATE UNIQUE INDEX unique_game_id_and_user_id_on_game_member ON "GameMember" (game_id, user_id);
+CREATE UNIQUE INDEX unique_game_id_and_user_id_on_game_member ON game_member (game_id, user_id);
 
 --
 -- ゲームログ（ユーザーの発言内容）
@@ -153,9 +153,9 @@ CREATE UNIQUE INDEX unique_game_id_and_user_id_on_game_member ON "GameMember" (g
 -- insert_at: 発言日時
 -- update_at: レコード更新日時
 --
-DROP TABLE IF EXISTS "GameLog";
+DROP TABLE IF EXISTS game_log;
 
-CREATE TABLE "GameLog" (
+CREATE TABLE game_log (
   log_id SERIAL
 , game_id INT NOT NULL
 , wave INT NOT NULL
@@ -166,7 +166,7 @@ CREATE TABLE "GameLog" (
 , PRIMARY KEY (log_id)
 );
 
-CREATE INDEX game_id_and_wave_and_insert_at_on_game_log ON "GameLog" (game_id, wave, insert_at);
+CREATE INDEX game_id_and_wave_and_insert_at_on_game_log ON game_log (game_id, wave, insert_at);
 
 --
 -- ゲームリザルト
@@ -178,9 +178,9 @@ CREATE INDEX game_id_and_wave_and_insert_at_on_game_log ON "GameLog" (game_id, w
 -- insert_at: 登録日時
 -- update_at: 最終更新日時
 --
-DROP TABLE IF EXISTS "GameResult";
+DROP TABLE IF EXISTS game_result;
 
-CREATE TABLE "GameResult" (
+CREATE TABLE game_result (
   result_id SERIAL
 , game_id INT NOT NULL
 , user_id INT NOT NULL
@@ -190,4 +190,4 @@ CREATE TABLE "GameResult" (
 , PRIMARY KEY (result_id)
 );
 
-CREATE UNIQUE INDEX unique_game_id_and_user_id_on_game_result ON "GameResult" (game_id, user_id);
+CREATE UNIQUE INDEX unique_game_id_and_user_id_on_game_result ON game_result (game_id, user_id);

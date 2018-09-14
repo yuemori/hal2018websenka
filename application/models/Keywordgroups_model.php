@@ -20,9 +20,9 @@
 			$CI->load->model('Keyword_model', 'keyword');
 
 			$this->db->select('*');
-			$this->db->from('KeywordGroups');
-			$this->db->join('Keyword', 'KeywordGroups.group_id=Keyword.group_id');
-			$this->db->where('KeywordGroups.group_id', $group_id);
+			$this->db->from('keyword_groups');
+			$this->db->join('keyword', 'keyword_groups.group_id=keyword.group_id');
+			$this->db->where('keyword_groups.group_id', $group_id);
 			$query = $this->db->get();
 			return $query->result('Keyword_model');
 		}
@@ -34,7 +34,7 @@
 		public function enum_ids($filter_user_id_array)
 		{
 			$this->db->select('group_id, register_user_id');
-			$this->db->from('KeywordGroups');
+			$this->db->from('keyword_groups');
 			$query = $this->db->get();
 			$filter_result = array();
 			$full_result = array();

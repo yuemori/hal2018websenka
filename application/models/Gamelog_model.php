@@ -19,11 +19,11 @@ require_once dirname(__FILE__). '/Game_model.php';
 		 */
 		public function load($game_id)
 		{
-			$this->db->select('log_id, game_id, wave, GameLog.user_id, nickname, say, GameLog.insert_at');
-			$this->db->from('GameLog');
-			$this->db->join('UserAccount', 'UserAccount.user_id=GameLog.user_id');
+			$this->db->select('log_id, game_id, wave, game_log.user_id, nickname, say, game_log.insert_at');
+			$this->db->from('game_log');
+			$this->db->join('user_account', 'user_account.user_id=game_log.user_id');
 			$this->db->where('game_id', $game_id);
-			$this->db->order_by('GameLog.wave DESC,GameLog.insert_at DESC');
+			$this->db->order_by('game_log.wave DESC,game_log.insert_at DESC');
 			$query = $this->db->get();
 			return $query->result('Gamelog_model');
 		}
@@ -38,7 +38,7 @@ require_once dirname(__FILE__). '/Game_model.php';
 			$this->db->set('say', $message);
 			$this->db->set('insert_at', 'NOW()', FALSE);
 			$this->db->set('update_at', 'NOW()', FALSE);
-			$ret = $this->db->insert('GameLog');
+			$ret = $this->db->insert('game_log');
 			return $ret;
 		}
 	}

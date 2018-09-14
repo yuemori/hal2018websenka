@@ -25,7 +25,7 @@ require_once dirname(__FILE__). '/Game_model.php';
 		public function login($name, $pass)
 		{
 			$this->db->select('user_id, nickname');
-			$this->db->from('UserAccount');
+			$this->db->from('user_account');
 			$this->db->where('name', $name);
 			$this->db->where('pass', md5($pass));
 			$query = $this->db->get();
@@ -38,7 +38,7 @@ require_once dirname(__FILE__). '/Game_model.php';
 		public function load($user_id)
 		{
 			$this->db->select('user_id, nickname');
-			$this->db->from('UserAccount');
+			$this->db->from('user_account');
 			$this->db->where('user_id', $user_id);
 			$query = $this->db->get();
 			return $query->first_row('Useraccount_model');
@@ -50,7 +50,7 @@ require_once dirname(__FILE__). '/Game_model.php';
 		public function exist_by_username($name)
 		{
 			$this->db->select('user_id');
-			$this->db->from('UserAccount');
+			$this->db->from('user_account');
 			$this->db->where('name', $name);
 			$query = $this->db->get();
 			return ($query->first_row('Useraccount_model') == NULL ? false : true);
@@ -58,7 +58,7 @@ require_once dirname(__FILE__). '/Game_model.php';
 		public function exist_by_nickname($nickname)
 		{
 			$this->db->select('user_id');
-			$this->db->from('UserAccount');
+			$this->db->from('user_account');
 			$this->db->where('nickname', $nickname);
 			$query = $this->db->get();
 			return ($query->first_row('Useraccount_model') == NULL ? false : true);
@@ -74,7 +74,7 @@ require_once dirname(__FILE__). '/Game_model.php';
 			$this->db->set('pass', md5($pass));
 			$this->db->set('insert_at', 'NOW()', FALSE);
 			$this->db->set('update_at', 'NOW()', FALSE);
-			$ret = $this->db->insert('UserAccount');
+			$ret = $this->db->insert('user_account');
 			return $ret ? $this->db->insert_id('user_account_user_id_seq') : NULL;
 		}
 
@@ -91,7 +91,7 @@ require_once dirname(__FILE__). '/Game_model.php';
 			if ($pass != "") $this->db->set('pass', md5($pass));
 			$this->db->set('update_at', 'NOW()', FALSE);
 			$this->db->where('user_id', $this->user_id);
-			$ret = $this->db->update('UserAccount');
+			$ret = $this->db->update('user_account');
 			return $ret;
 		}
 
