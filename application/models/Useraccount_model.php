@@ -75,7 +75,7 @@ require_once dirname(__FILE__). '/Game_model.php';
 			$this->db->set('insert_at', 'NOW()', FALSE);
 			$this->db->set('update_at', 'NOW()', FALSE);
 			$ret = $this->db->insert('UserAccount');
-			return $ret ? $this->db->insert_id() : NULL;
+			return $ret ? $this->db->insert_id('user_account_user_id_seq') : NULL;
 		}
 
 		/*!

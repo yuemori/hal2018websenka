@@ -422,7 +422,7 @@ define('GAME_STATUS_STARTED', 1); // ゲーム中
 			$this->db->set('minimum', $minimum);
 			$this->db->set('playtime', $playtime);
 			$this->db->insert('Game');
-			return $this->db->insert_id();
+			return $this->db->insert_id('game_game_id_seq');
 		}
 	}
 
