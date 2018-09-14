@@ -105,11 +105,11 @@ define('GAME_STATUS_STARTED', 1); // ゲーム中
 			$this->db->set('minority_user_id', $wordwolf->user_id);
 			$this->db->set('status', GAME_STATUS_STARTED); 
 			$this->db->set('start_at'
-						   , sprintf("(NOW() + INTERVAL %d SECOND)"
+						   , sprintf("(NOW() + INTERVAL '%d SECOND')"
 									 , GameInitializer::GAME_START_INTERVAL)
 						   , FALSE);
 			$this->db->set('end_at'
-						   , sprintf("(NOW() + INTERVAL %d SECOND)"
+						   , sprintf("(NOW() + INTERVAL '%d SECOND')"
 									 , GameInitializer::GAME_START_INTERVAL + $game->playtime)
 						   , FALSE);
 			$this->db->where('game_id', $game->game_id);
