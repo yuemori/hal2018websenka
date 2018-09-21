@@ -74,7 +74,7 @@ VALUES
 DROP TABLE IF EXISTS keyword_groups;
 
 CREATE TABLE keyword_groups (
-  group_id INT NOT NULL
+  group_id SERIAL
 , register_user_id INT NOT NULL
 , md5sum VARCHAR(32) NOT NULL
 , PRIMARY KEY (group_id)
