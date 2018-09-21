@@ -91,10 +91,10 @@ CREATE UNIQUE INDEX md5sum ON keyword_groups (md5sum);
 INSERT INTO keyword_groups
   (group_id, register_user_id, md5sum)
 VALUES
-  (1, 10, MD5('ワカメ豆腐'))
-, (2, 10, MD5('コーヒー紅茶'))
-, (3,  1, MD5('オセロ囲碁'))
-, (4, 10, MD5('プール露天風呂'))
+  (1, 10, MD5('ワカメ,豆腐'))
+, (2, 10, MD5('コーヒー,紅茶'))
+, (3,  1, MD5('オセロ,囲碁'))
+, (4, 10, MD5('プール,露天風呂'))
 ;
 
 SELECT SETVAL('keyword_groups_group_id_seq', 5);
