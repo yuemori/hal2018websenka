@@ -43,7 +43,14 @@
 		 */
 		public function register($new_group_id, $word)
 		{
-			return 0;
+			$this->db->set('group_id', $new_group_id);
+			$this->db->set('word', $word);
+			$this->db->set('insert_at', 'NOW()', FALSE);
+			$this->db->set('update_at', 'NOW()', FALSE);
+			if (!$this->db->insert('keyword')) {
+				return 0;
+			}
+			return $this->db->insert_id('keyword_word_id_seq');
 		}
 	}
 

@@ -67,7 +67,7 @@
 			// ・コーヒー、紅茶 として処理を行い、
 			// 最終的に同一のチェックサム（1a990917ff226b54a286819c47714cb4）こんな文字列を作り出します。
 			sort($word_array);
-			$check_sum = md5(implode($word_array));
+			$check_sum = md5(implode($word_array, ","));
 
 			// 一つのワードグループのDBの構造はこんな感じ
 			// KeywordGroups 1 record
@@ -82,11 +82,16 @@
 			// KeywordGroups テーブルにレコードをINSERT成功したら、
 			// 責任持ってKeywordテーブルに２つのレコードを登録すること！
 
-			// TODO: DBへ書き込み KeywordGroups table.
-			//       ここで新しく振られたIDは、下記単語の登録時に利用します。
-			$new_group_id = 0;
+			// DBへ書き込み KeywordGroups table.
+			// ここで新しく振られたIDは、下記単語の登録時に利用します。
+			$this->db->set('register_user_id', $register_user_id);
+			$this->db->set('md5sum', $check_sum);
+			if (!$this->db->insert('keyword_groups')) {
+				return false;
+			}
+			$new_group_id = $this->db->insert_id('keyword_groups_group_id_seq');
 
-			// TODO: DBへ書き込み Keyword table.
+			// DBへ書き込み Keyword table.
 			$CI =& get_instance();
 			$CI->load->model('Keyword_model', 'keyword');
 			foreach ($word_array as $word) {
