@@ -63,6 +63,8 @@ VALUES
 , (8, 4, '露天風呂', NOW(), NOW())
 ;
 
+SELECT SETVAL('keyword_word_id_seq', 9);
+
 --
 -- 登録キーワードの重複チェックテーブル
 -- ＊キーワードをASCII昇順でソートして連結した物のMD5
@@ -94,6 +96,8 @@ VALUES
 , (3,  1, MD5('オセロ囲碁'))
 , (4, 10, MD5('プール露天風呂'))
 ;
+
+SELECT SETVAL('keyword_groups_group_id_seq', 5);
 
 --
 -- ゲーム進行管理
